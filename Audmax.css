@@ -1,0 +1,290 @@
+* {
+	box-sizing: border-box;
+}
+
+	/* Set height of body and the document to 100% */
+	body, html {
+	  		height: 100%;
+	  		margin: 0;
+  			font-family: Arial;
+  			text-align: center;
+		}
+
+	#vistaPrincipal {
+		background-color: #e3e2de;
+	}
+	#baseDatos {
+		background-color: #e3e2de;
+	}
+	#calibracion {
+		background-color: #e3e2de;
+	}
+	#audiometria {
+		background-color: #e3e2de;
+	}
+	#logoaudiometria {
+		background-color: #e3e2de;
+	}
+
+	th {
+		border: 1px solid black;
+		margin: 0 0;
+	}
+
+	td {
+		background-color: white;
+		border: 1px solid black;
+		margin: 0 0;
+	}
+
+	.pinline {
+		display: inline-block;
+	}
+/*------------------------------------------------------------------------------------------------------*/
+	/* Base de Datos */
+
+	.cards {
+		margin-top: 20px;
+		display: flex;
+		justify-content: space-evenly;
+	}
+	
+	.property-card {
+		background: rgb(232, 225, 231);
+		box-shadow: 0 0 16px rgba(32, 4, 69, 0.5);
+		width:30%;
+		float: left;
+		margin:1.66%;
+		margin-top: 40px;
+		padding: 10px;
+		border-radius: 20px;
+		text-align: center;
+	}
+	
+
+/*------------------------------------------------------------------------------------------------------*/
+	/*Audiometría*/
+
+	.audiometria__panelControl{
+		display: flex;
+	}
+
+	.audiometria__signal {
+		width: 40%;
+		margin: 0 2%;
+	}
+
+	.audiometria__signalAux{
+		display: flex;
+		width: 100%;
+		height: 6rem;
+	}
+
+	.audiometria__oido {
+		border: 1px solid black;
+		width: 40%;
+	}
+
+	.audiometria__tipoSignal {
+		border: 1px solid black;
+		width: 60%;
+	}
+
+	.audiometria__frecuenciaIntensidad {
+		border: 1px solid black;
+		width: 100%;
+		height: 6rem;
+	}
+
+	.audiometria__controles {
+		display: flex;
+		flex-direction: column;
+		border: 1px solid black;
+		width: 20%;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
+		margin: 0 2%;
+		height: 12rem;
+	}
+
+	.btn__control {
+		display: block;
+  		border: 1px solid black;
+		margin: 4% auto;
+  		width: 60%;
+  		height: 3rem;
+	}
+
+	.audiometria__enmascaramiento {
+		width: 30%;
+		border: 1px solid black;
+		text-align: center;
+		padding-top: 1%;
+		margin: 0 2%;
+		height: 12rem;
+	}
+
+	.audiometria__tabla {
+		width: 96%;
+		border: 2px solid black;
+		margin: 4% auto 2% auto;
+		border-collapse: collapse;
+	}
+
+
+	.btn__abajo {
+		display: inline;
+		width: 15%;
+		height: 3rem;
+		margin: 2% 4%; 
+	}
+
+/*------------------------------------------------------------------------------------------------------*/
+
+	/*Logoaudiometría*/
+	
+	.logoaudiometria__listas{
+		display: flex;
+		justify-content: center;
+	}
+
+	.logoaudiometria__listas1 {
+		border: 2px solid black;
+		width: 20%;
+		margin: 1% auto;
+	}
+
+	.btn__logoLista1 {
+		width: 25%;
+		margin: 1.5%;
+	}
+
+	.logoaudiometria__listas2 {
+		border: 2px solid black;
+		width: 15%;
+		margin: 1% auto;	
+	}
+
+	.btn__logoLista2 {
+		width: 30%;
+		margin: 4.5% 1.5%;
+	}
+
+	.logoaudiometria__listas3 {
+		border: 2px solid black;
+		width: 15%;
+		margin: 1% auto;
+	}	
+
+	.btn__logoLista3 {
+		width: 50%;
+		margin: 4.5% 1.5%;
+	}
+
+	.logoaudiometria__enmascaramiento {
+		border: 2px solid black;
+		width: 25%;
+		margin: 1% auto;
+	}
+
+	.logoaudiometria__panel {
+		display: flex;
+		justify-content: center;
+	}
+
+	.logoaudiometria__signal {
+		width: 28%;
+		margin: 1% auto 0 auto;
+	}
+
+	.logoaudiometria__oido {
+		border: 2px solid black;
+		height: 6.5rem;
+	}	
+
+	.logoaudiometria__intensidad {
+		border: 2px solid black;
+		height: 6.5rem;
+		padding-top: 8%;
+	}
+
+	.logoaudiometria__controles {
+		border: 2px solid black;
+		width: 24%;
+		height: 13rem;
+		margin: 1% auto 0 auto;
+	}
+
+	.btn__logoControl {
+		width: 150px;
+		height: 30px;
+		margin: 5px auto;
+	}
+
+	#btn__logoCorrecto {
+		background-color: green;
+		height: 50px;
+		width: 50px;
+		margin: 4% auto;
+		margin-right: 8%;
+	}
+
+	#btn__logoIncorrecto {
+		background-color: red;
+		height: 50px;
+		width: 50px;
+		margin: 4% auto;
+		margin-left: 8%;
+	}
+
+	.logoaudiometria__tabla {
+		width: 45%;
+		height: 13rem;
+		border: 2px solid black;
+		margin: 1% auto 0 auto;
+		border-collapse: collapse;
+	}
+
+	.logoaudiometria__tdTitulo {
+		background-color: #e3e2de;
+		border: 1px solid black;
+		margin: 0 0;
+	}
+
+	.logoaudiometria__td {
+		background-color: white;
+		border: 1px solid black;
+		margin: 0 0;
+	}
+
+	.logoaudiometria__botonesAbajo {
+		margin: 0 auto;
+	}
+
+
+	/* Style tab links */
+	.tablink {
+  		background-color: #e3e2de;
+  		color: black;
+  		float: left;
+  		border: none;
+  		outline: none;
+  		cursor: pointer;
+		padding: 14px 16px;
+  		font-size: 17px;
+ 	 	width: 20%;
+	}
+
+	.tablink:hover {
+	  	background-color: #777;
+	}
+
+	/* Style the tab content (and add height:100% for full page content) */
+	.tabcontent {
+		color: black;
+		display: none;
+		padding: 100px 20px;
+		height: 100%;
+	}
+

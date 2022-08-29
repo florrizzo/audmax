@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>AUDMAX</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="Audmax.css">
+	
+</head>
+<body>
+	<button class="tablink" onclick="openPage('vistaPrincipal', this, '#777')">Vista Principal</button>
+	<button class="tablink" onclick="openPage('baseDatos', this, '#777')" id="defaultOpen">Base de Datos</button>
+	<button class="tablink" onclick="openPage('calibracion', this, '#777')">Calibración</button>
+	<button class="tablink" onclick="openPage('audiometria', this, '#777')">Audiometría</button>
+	<button class="tablink" onclick="openPage('logoaudiometria', this, '#777')" id="defaultOpen">Logoaudiometría</button>
+	
+	<!-- VISTA PRINCIPAL -->
+	<div id="vistaPrincipal" class="tabcontent">
+		<h1>AUDMAX AR14</h1>
+		<p>Audmax es un audiómetro online que permite realizar los estudios de audiometría y logoaudiometría para medir la audición del paciente.</p>
+		<p>En la pestaña "Calibración" vas a poder calibrar la página según el hardware que utilices. La intensidad con la que se reproduce un audio depende de cada sistema de reproducción, por lo que para que estos estudios tengan validez es necesario medir los niveles de reproducción según dice el audiómetro y cargar en esta pestaña de calibración las diferencias que hayan.</p>
+		<p>En la pestaña “Audiometría” vas a poder realizar todas las configuraciones necesarias para poder realizar las pruebas de audiometría tonal.</p>
+		<p>En la pestaña “Logoaudiometría” vas a poder realizar todas las configuraciones necesarias para poder realizar las pruebas de Logoaudiometría.</p>
+	</div>
+
+	<!-- BASE DE DATOS -->
+	<div id="baseDatos" class="tabcontent">
+		<h1>Base de Datos</h1>
+		<button onclick="mostrarDatos(basePacientes)">Lista de pacientes</button>
+		<input id="buscadorPacientes" type="text" placeholder="Nombre">
+		<button onclick="buscarPaciente()">Buscar</button>
+		<button onclick="nuevoPaciente()">Nuevo</button>
+		<form id="nuevoPaciente">
+		</form>
+		<div id="Pacientes"></div>
+	</div>
+
+	<!-- CALIBRACIÓN -->
+	<div id="calibracion" class="tabcontent">
+		<p>En la siguiente tabla se permite cargar la curva medida en dBHL del sistema de reproducción.</p>         
+        <table class="audiometria__tabla">
+            <thead>
+                <tr>
+                    <th>Frecuencia [Hz]</th>
+                    <th>125</th>
+                    <th>250</th>
+                    <th>500</th>
+                    <th>1000</th>
+                    <th>1500</th>
+                    <th>2000</th>
+                    <th>4000</th>
+                    <th>6000</th>
+                    <th>8000</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Diferencia</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="btn__principal">Calibrar</button>
+	</div>
+
+
+	<!-- AUDIOMETRÍA -->
+	<div id="audiometria" class="tabcontent">
+		<div class="audiometria__panelControl">
+			<div class="audiometria__signal">
+				<div class="audiometria__signalAux">
+					<div class="audiometria__oido">
+						<p>Oído:</p>
+						<input name="oidoAudiometria" id="Derecho" value="1" type="radio">
+						<label for="Derecho">Derecho</label>
+						<input name="oidoAudiometria" id="Izquierdo" value="-1" type="radio">
+						<label for="Izquierdo">Izquierdo</label>		
+					</div>
+					<div class="audiometria__tipoSignal">
+						<p>Tipo de señal:</p>
+						<input name="tipoSignal" id="continua" type="radio">
+						<label for="continua">Continua</label>
+						<input name="tipoSignal" id="pulsada" type="radio">
+						<label for="pulsada">Pulsada</label>
+						<input name="tipoSignal" id="manual" type="radio">
+						<label for="manual">Manual</label>
+					</div>
+				</div>
+				
+				<div class="audiometria__frecuenciaIntensidad">
+					<div>
+						<p class="pinline">Frecuencia [Hz]:</p>
+						<button onclick="changeFrequencyn1()">- 1 oct</button>
+<!-- 				  		<button onclick="changeFrequencyn13()">- 1/3 oct</button> -->
+						<p id="audioFrequency" class="pinline">1000</p>
+<!-- 				  		<button onclick="changeFrequencyp13()">+ 1/3 oct</button> -->
+						<button onclick="changeFrequencyp1()">+ 1 oct</button>
+				  	</div>
+				  	<div>
+						<p class="pinline">Intensidad [dBHL]:</p>
+						<button onclick="changeIntensityn5('audioIntensity')">-5</button>
+						<button onclick="changeIntensityn1('audioIntensity')">- 1</button>
+						<p id="audioIntensity" class="pinline">10</p>
+						<button onclick="changeIntensityp1('audioIntensity')">+ 1</button>
+						<button onclick="changeIntensityp5('audioIntensity')">+ 5</button>
+				  	</div>
+				</div>
+			</div>
+			
+			<div class="audiometria__controles">
+				<button onclick="playNote(2000)" class="btn__control">Reproducir tono</button>
+				<button onclick="umbralAudiometria()" class="btn__control">Añadir umbral</button>
+		  	</div>
+
+			<div class="audiometria__enmascaramiento">
+				<input id="audiometria__enmascarar" type="checkbox" value="1">
+				<label for="audiometria__enmascarar">Enmascarar</label>
+				<p>Tipo de enmascaramiento:</p>
+				<div>
+					<input name="tipoEnmascaramiento" id="bandaAncha" type="radio">
+					<label for="bandaAncha">Ruido de banda ancha</label>
+				</div>
+				<div>
+					<input name="tipoEnmascaramiento" id="bandaEstrecha" type="radio">
+					<label for="bandaEstrecha">Ruido de banda estrecha</label>
+				</div>
+				<p class="pinline">Intensidad:</p>
+			  	<button onclick="changeIntensityn5('maskIntensity')">-5</button>
+			  	<button onclick="changeIntensityn1('maskIntensity')">-1</button>
+			  	<p id="maskIntensity" class="pinline">0 dBHL</p>
+			  	<button onclick="changeIntensityp1('maskIntensity')">+ 1</button>
+			  	<button onclick="changeIntensityp5('maskIntensity')">+ 5</button>	
+		  	</div>
+		</div>
+
+		<table class="audiometria__tabla">
+			<thead>
+				<tr>
+					<th class="audiometria__tableHeader">Frecuencia</td>
+					<th class="audiometria__tableHeader">125</th>
+					<th class="audiometria__tableHeader">250</th>
+					<th class="audiometria__tableHeader">500</th>
+					<th class="audiometria__tableHeader">1000</th>
+					<th class="audiometria__tableHeader">1500</th>
+					<th class="audiometria__tableHeader">2000</th>
+					<th class="audiometria__tableHeader">4000</th>
+					<th class="audiometria__tableHeader">6000</th>
+					<th class="audiometria__tableHeader">8000</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th class="audiometria__tableHeader">Oído Derecho</td>
+					<td id="Der125"></td>
+					<td id="Der250"></td>
+					<td id="Der500"></td>
+					<td id="Der1000"></td>
+					<td id="Der1500"></td>
+					<td id="Der2000"></td>
+					<td id="Der4000"></td>
+					<td id="Der6000"></td>
+					<td id="Der8000"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">Oído Izquierdo</td>
+					<td id="Izq125"></td>
+					<td id="Izq250"></td>
+					<td id="Izq500"></td>
+					<td id="Izq1000"></td>
+					<td id="Izq1500"></td>
+					<td id="Izq2000"></td>
+					<td id="Izq4000"></td>
+					<td id="Izq6000"></td>
+					<td id="Izq8000"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">Enmascaramiento Derecho</td>
+					<td id="EnmDer125"></td>
+					<td id="EnmDer250"></td>
+					<td id="EnmDer500"></td>
+					<td id="EnmDer1000"></td>
+					<td id="EnmDer1500"></td>
+					<td id="EnmDer2000"></td>
+					<td id="EnmDer4000"></td>
+					<td id="EnmDer6000"></td>
+					<td id="EnmDer8000"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">Enmascaramiento Izquierdo</td>
+					<td id="EnmIzq125"></td>
+					<td id="EnmIzq250"></td>
+					<td id="EnmIzq500"></td>
+					<td id="EnmIzq1000"></td>
+					<td id="EnmIzq1500"></td>
+					<td id="EnmIzq2000"></td>
+					<td id="EnmIzq4000"></td>
+					<td id="EnmIzq6000"></td>
+					<td id="EnmIzq8000"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="audiometria__botonesAbajo">
+			<button class="btn__abajo">Graficar</button>
+			<button class="btn__abajo">Guardar</button>
+		</div>
+	</div>
+
+	
+
+	<!-- LOGOAUDIOMETRÍA -->
+	<div id="logoaudiometria" class="tabcontent">
+		<div class="logoaudiometria__listas">
+			<div class="logoaudiometria__listas1" id="listasAdultos1">
+				<p>Listas adultos:</p>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A1.wav')" class="btn__logoLista1">A1</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B1.wav')" class="btn__logoLista1">B1</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C1.wav')" class="btn__logoLista1">C1</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A2.wav')" class="btn__logoLista1">A2</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B2.wav')" class="btn__logoLista1">B2</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C2.wav')" class="btn__logoLista1">C2</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A3.wav')" class="btn__logoLista1">A3</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B3.wav')" class="btn__logoLista1">B3</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C3.wav')" class="btn__logoLista1">C3</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A4.wav')" class="btn__logoLista1">A4</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B4.wav')" class="btn__logoLista1">B4</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C4.wav')" class="btn__logoLista1">C4</button>
+			</div>
+			<div class="logoaudiometria__listas1" id="listasAdultos2">
+				<p>Listas adultos 2:</p>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A1.wav')" class="btn__logoLista1">A1</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B1.wav')" class="btn__logoLista1">B1</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C1.wav')" class="btn__logoLista1">C1</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A2.wav')" class="btn__logoLista1">A2</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B2.wav')" class="btn__logoLista1">B2</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C2.wav')" class="btn__logoLista1">C2</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A3.wav')" class="btn__logoLista1">A3</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B3.wav')" class="btn__logoLista1">B3</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C3.wav')" class="btn__logoLista1">C3</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A4.wav')" class="btn__logoLista1">A4</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B4.wav')" class="btn__logoLista1">B4</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C4.wav')" class="btn__logoLista1">C4</button>
+			</div>
+
+			<div class="logoaudiometria__listas2">
+				<p>Listas niños:</p>
+				<button onclick="music('./audios/listas_ninos/ninos_A1.wav')" class="btn__logoLista2">A1</button>
+				<button onclick="music('./audios/listas_ninos/ninos_B1.wav')" class="btn__logoLista2">B1</button>
+				<button onclick="music('./audios/listas_ninos/ninos_A2.wav')" class="btn__logoLista2">A2</button>
+				<button onclick="music('./audios/listas_ninos/ninos_B2.wav')" class="btn__logoLista2">B2</button>
+				<button onclick="music('./audios/listas_ninos/ninos_A3.wav')" class="btn__logoLista2">A3</button>			
+			</div>
+
+			<div class="logoaudiometria__listas3">
+				<p>Listas monosilábicas:</p>
+				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M1.wav')" class="btn__logoLista3">M1</button>
+				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M2.wav')" class="btn__logoLista3">M2</button>
+				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M3.wav')" class="btn__logoLista3">M3</button>			
+			</div>
+	
+			<div class="logoaudiometria__enmascaramiento">
+				  <input id="enmascarar" type="checkbox">
+				  <label for="enmascarar">Enmascarar</label>
+				  <p>Tipo de enmascaramiento:</p>
+				  <div>
+					  <input name="tipoEnmascaramiento" id="bandaAncha" type="radio">
+					<label for="bandaAncha">Ruido de banda ancha</label>
+				  </div>
+				  <div>
+					  <input name="tipoEnmascaramiento" id="bandaEstrecha" type="radio">
+					<label for="bandaEstrecha">Ruido Verbal</label>
+				</div>
+				<p class="pinline">Intensidad:</p>
+				<button>- 1</button>
+				<button>- 5</button>
+				<p class="pinline">0 dBHL</p>
+				<button>+ 1</button>
+				<button>+ 5</button>	
+			</div>
+		</div>
+
+		<div class="logoaudiometria__panel">
+			<div class="logoaudiometria__signal">
+				<div class="logoaudiometria__oido">
+					<p>Oído:</p>
+					<input name="oido" id="derecho" type="radio">
+					<label for="derecho">Derecho</label>
+					<input name="oido" id="izquierdo" type="radio">
+					<label for="izquierdo">Izquierdo</label>
+					<input name="oido" id="ambos" type="radio">
+					<label for="ambos">Ambos</label>			
+				  </div>
+				<div class="logoaudiometria__intensidad">
+					<p class="pinline">Intensidad:</p>
+					<button>- 1</button>
+					<button>- 5</button>
+					<p class="pinline">0 dBHL</p>
+					<button>+ 1</button>
+					<button>+ 5</button>
+				</div>
+			</div>
+			<div class="logoaudiometria__controles">
+				<div>
+					<button class="btn__logoControl">Reproducir Lista</button>
+				</div>
+				<div>
+					<button id="btn__logoCorrecto"></button>
+					<button id="btn__logoIncorrecto"></button>
+				</div>
+				<div>
+				  <button onclick="logoaudio.play()" class="btn__logoControl">Play/Pausa</button>
+				</div>
+				<div>
+				  <button class="btn__logoControl">Finalizar Lista</button>
+				</div>
+			</div>
+	
+			<table class="logoaudiometria__tabla">
+				<thead>
+					<tr>
+						<td class="logoaudiometria__tdTitulo" colspan="5">Lista:</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+	  	<div class="logoaudiometria__botonesAbajo">
+			<button class="btn__abajo">Resultado</button>
+			<button class="btn__abajo">Borrar tabla</button>
+			<button class="btn__abajo">Guardar</button>
+	  	</div>				
+	</div>
+
+	<!-- Script para tabs --> 
+	<script type="text/javascript" src="Audmax.js"></script>
+
+</body>
+</html>
