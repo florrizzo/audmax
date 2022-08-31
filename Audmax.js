@@ -16,7 +16,6 @@ function openPage(pageName,elmnt,color) {
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
 
-
 // -------------------------------------------------------------------------------------------------------
 // Base de datos de pacientes
 
@@ -28,9 +27,6 @@ class Paciente{
 		this.telefono = telefono;
 		this.patologia = patologia;
     }
-	mostrarDatos(){
-		console.log("Nombre: " + this.nombre + ", Edad: " + this.edad + ", Mail: " + this.mail + ", Teléfono: " + this.telefono + ", Patología: " + this.patologia);
-	}
 }
 
 let basePacientes = JSON.parse(localStorage.getItem("basePacientes"));
@@ -47,7 +43,7 @@ function mostrarDatos(base){
 	let contenedor = "";
 	if (base){
 		for (const paciente of base) {
-			contenedor = contenedor + `<div class="property-card">
+			contenedor +=`<div class="property-card">
 									<h3> Nombre: ${paciente.nombre}</h3>
 									<p>  Edad: ${paciente.edad}</p>
 									<p>  Mail: ${paciente.mail}</p>
@@ -100,14 +96,10 @@ function nuevoPaciente(){
 }
 
 function submitPaciente(){
-	let nombre = document.getElementById("nombre").value;
-	let edad = document.getElementById("edad").value;
-	let mail = document.getElementById("mail").value;
-	let telefono = document.getElementById("telefono").value;
-	let patologia = document.getElementById("patologia").value;
-
-	const pacienteNuevo = new Paciente(nombre, edad, mail, telefono, patologia);
-	basePacientes.push(pacienteNuevo);
+	const pacienteNuevo = new Paciente(document.getElementById("nombre").value, document.getElementById("edad").value, document.getElementById("mail").value, document.getElementById("telefono").value, document.getElementById("patologia").value);
+	basePacientes = [...basePacientes, pacienteNuevo];
+	const {nombre} = pacienteNuevo; 
+	document.getElementById("textoBaseDeDatos").innerHTML = `<p>Se agrego al paciente ${nombre} a la base de datos<p/>`;
 	let mostrarPacienteNuevo = [basePacientes[basePacientes.length-1]];
 	mostrarDatos(mostrarPacienteNuevo);
 	saveStorage();
@@ -127,7 +119,6 @@ saveStorage();
 let audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 
 function playNote(duration) {
-
 	let frequency = parseInt(document.getElementById("audioFrequency").innerHTML);
 
 	// volume
@@ -149,6 +140,8 @@ function playNote(duration) {
 	let panValue = "";
               
 	for(i = 0; i < ele.length; i++) {
+		// Si lo escribo en ternario no anda (creo que porque uso ":checked")
+		// (ele[i].checked) ? panValue = document.querySelector('input[name="oidoAudiometria"]:checked').value: panValue = 0;
 		if(ele[i].checked){
 			panValue = document.querySelector('input[name="oidoAudiometria"]:checked').value;
 			break;
@@ -183,9 +176,7 @@ function changeFrequencyn1(){
 	// Encontrar indice en frecuencies
 	index = list_frequencies.indexOf(frequency);
 	// Subir o bajar el indice si no estoy en los extremo
-	if (frequency >126){
-		frequency = list_frequencies[index-1];
-	}
+	(frequency >126) ? frequency = list_frequencies[index-1] : frequency = frequency;
 	// Devolver valor del indice
 	document.getElementById("audioFrequency").innerHTML = frequency;
 }
@@ -195,9 +186,7 @@ function changeFrequencyp1(){
 	// Encontrar indice en frecuencies
 	index = list_frequencies.indexOf(frequency);
 	// Subir o bajar el indice si no estoy en los extremo
-	if (frequency < 7500){
-		frequency = list_frequencies[index+1];
-	}
+	(frequency < 7500) ? frequency = list_frequencies[index+1] : frequency = frequency;
 	// Devolver valor del indice
 	document.getElementById("audioFrequency").innerHTML = frequency;
 }
@@ -205,10 +194,7 @@ function changeFrequencyp1(){
 function changeIntensityn1(id){
 	let intensity = parseInt(document.getElementById(id).innerHTML);
 	// Subir o bajar la intensidad si no estoy en los extremos
-	if (intensity > -10){
-		intensity = intensity - 1;
-	}
-
+	(intensity > -10) ? intensity -- : intensity = intensity;
 	// Devolver valor del indice
 	document.getElementById(id).innerHTML = intensity;
 }
@@ -216,10 +202,7 @@ function changeIntensityn1(id){
 function changeIntensityp1(id){
 	let intensity = parseInt(document.getElementById(id).innerHTML);
 	// Subir o bajar la intensidad si no estoy en los extremo
-	if (intensity < 95){
-		intensity = intensity + 1;
-	}
-
+	(intensity < 95) ? intensity++ : intensity = intensity;
 	// Devolver valor del indice
 	document.getElementById(id).innerHTML = intensity;
 }
@@ -228,14 +211,8 @@ function changeIntensityp5(id){
 	let intensity = parseInt(document.getElementById(id).innerHTML);
 	// Subir o bajar la intensidad si no estoy en los extremo
 	if (intensity < 95){
-		if ((intensity % 5) != 0) {
-			intensity = Math.ceil(intensity/5)*5;
-		}
-		else {
-			intensity = intensity + 5;
-		}
+		(intensity % 5) != 0 ? intensity = Math.ceil(intensity/5)*5 : intensity += 5;
 	}
-
 	// Devolver valor del indice
 	document.getElementById(id).innerHTML = intensity;
 }
@@ -244,14 +221,8 @@ function changeIntensityn5(id){
 	let intensity = parseInt(document.getElementById(id).innerHTML);
 	// Subir o bajar la intensidad si no estoy en los extremo
 	if (intensity > -10){
-		if ((intensity % 5) != 0) {
-			intensity = Math.ceil(intensity/5)*5 - 5;
-		}
-		else {
-			intensity = intensity - 5;
-		}
+		(intensity % 5) != 0 ? intensity = Math.ceil(intensity/5)*5 - 5: intensity -= 5;
 	}
-
 	// Devolver valor del indice
 	document.getElementById(id).innerHTML = intensity;
 }
@@ -479,8 +450,7 @@ function umbralAudiometria(){
 	}
 }
 
-
-// -----------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 // LOGOAUDIOMETRÍA
 
 let logoaudio = "";
