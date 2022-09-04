@@ -210,12 +210,16 @@
 		</table>
 
 		<div class="audiometria__botonesAbajo">
-			<button class="btn__abajo">Graficar</button>
+			<button class="btn__abajo" onclick="graphic()">Graficar</button>
 			<button class="btn__abajo">Guardar</button>
+		</div>
+		<div>
+			<canvas id="myChart"></canvas>
 		</div>
 	</div>
 
-	
+
+
 
 	<!-- LOGOAUDIOMETRÍA -->
 	<div id="logoaudiometria" class="tabcontent">
@@ -377,6 +381,9 @@
 	  	</div>				
 	</div>
 
+
+	<!-- Incluyendo librería Chart.js -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<!-- Script para tabs --> 
 	<script type="text/javascript" src="Audmax.js"></script>
 

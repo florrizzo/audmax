@@ -450,6 +450,96 @@ function umbralAudiometria(){
 	}
 }
 
+let myChart;
+
+function graphic(){
+	if (myChart) {
+        myChart.destroy();
+    }
+	const data = {
+		labels: ['125', '250', '500', '1000', '1500', '2000', '4000', '6000', '8000'],
+		datasets: [{
+			label: 'Audiograma Oído Derecho',
+			backgroundColor: 'rgb(230, 17, 2)',
+			borderColor: 'rgb(230, 17, 2)',
+			data: [document.getElementById("Der125").innerHTML, 
+			document.getElementById("Der125").innerHTML,
+			document.getElementById("Der250").innerHTML,
+			document.getElementById("Der500").innerHTML,
+			document.getElementById("Der1000").innerHTML,
+			document.getElementById("Der1500").innerHTML,
+			document.getElementById("Der2000").innerHTML,
+			document.getElementById("Der4000").innerHTML,
+			document.getElementById("Der6000").innerHTML,
+			document.getElementById("Der8000").innerHTML],
+		},
+		{
+			label: 'Audiograma Oído izquierdo',
+			backgroundColor: 'rgb(51, 61, 235)',
+			borderColor: 'rgb(51, 61, 235)',
+			data: [document.getElementById("Izq125").innerHTML, 
+			document.getElementById("Izq125").innerHTML,
+			document.getElementById("Izq250").innerHTML,
+			document.getElementById("Izq500").innerHTML,
+			document.getElementById("Izq1000").innerHTML,
+			document.getElementById("Izq1500").innerHTML,
+			document.getElementById("Izq2000").innerHTML,
+			document.getElementById("Izq4000").innerHTML,
+			document.getElementById("Izq6000").innerHTML,
+			document.getElementById("Izq8000").innerHTML],
+		},
+		{
+			label: 'Enmascaramiento izquierdo',
+			backgroundColor: 'rgb(23, 232, 0)',
+			borderColor: 'rgb(23, 232, 0)',
+			data: [document.getElementById("EnmIzq125").innerHTML, 
+			document.getElementById("EnmIzq250").innerHTML,
+			document.getElementById("EnmIzq500").innerHTML,
+			document.getElementById("EnmIzq1000").innerHTML,
+			document.getElementById("EnmIzq1500").innerHTML,
+			document.getElementById("EnmIzq2000").innerHTML,
+			document.getElementById("EnmIzq4000").innerHTML,
+			document.getElementById("EnmIzq6000").innerHTML,
+			document.getElementById("EnmIzq8000").innerHTML],
+		},
+		{
+			label: 'Enmascaramiento Derecho',
+			backgroundColor: 'rgb(250, 250, 7)',
+			borderColor: 'rgb(250, 250, 7)',
+			data: [document.getElementById("EnmDer125").innerHTML, 
+			document.getElementById("EnmDer250").innerHTML,
+			document.getElementById("EnmDer500").innerHTML,
+			document.getElementById("EnmDer1000").innerHTML,
+			document.getElementById("EnmDer1500").innerHTML,
+			document.getElementById("EnmDer2000").innerHTML,
+			document.getElementById("EnmDer4000").innerHTML,
+			document.getElementById("EnmDer6000").innerHTML,
+			document.getElementById("EnmDer8000").innerHTML],
+		}]
+	};
+	
+	const config = {
+		type: 'line',
+		data: data,
+		options: {
+			scales: {
+				y: {
+					max: 95,
+					min: -10,
+					ticks: {
+						stepSize: 5
+					}
+				}
+		}}
+	};
+	  
+	myChart = new Chart(
+		document.getElementById('myChart'),
+		config
+	);
+}
+
+
 // -------------------------------------------------------------------------------------------
 // LOGOAUDIOMETRÍA
 
@@ -458,3 +548,5 @@ let logoaudio = "";
 function music(audio){
 	logoaudio = new Audio(audio);
 }
+
+
