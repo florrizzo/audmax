@@ -29,15 +29,27 @@ class Paciente{
     }
 }
 
-let basePacientes = JSON.parse(localStorage.getItem("basePacientes"));
+// let basePacientes = JSON.parse(localStorage.getItem("basePacientes"));
 
-if (basePacientes == null){
-	const paciente1 = new Paciente("Hermione", 28, "hermionegranger@gmail.com", 1123344553, "No");
-	const paciente2 = new Paciente("Ron", 29, "ronweasly@gmail.com", 1154323678, "Hipoacusia leve en oído izquierdo");
-	const paciente3 = new Paciente("Harry", 27, "harrypotter@gmail.com", 1190473250, "Tinnitus en octava de 8000 Hz");
+// if (basePacientes == null){
+// 	const paciente1 = new Paciente("Hermione", 28, "hermionegranger@gmail.com", 1123344553, "No");
+// 	const paciente2 = new Paciente("Ron", 29, "ronweasly@gmail.com", 1154323678, "Hipoacusia leve en oído izquierdo");
+// 	const paciente3 = new Paciente("Harry", 27, "harrypotter@gmail.com", 1190473250, "Tinnitus en octava de 8000 Hz");
 
-	basePacientes = [paciente1, paciente2, paciente3];
-}
+// 	basePacientes = [paciente1, paciente2, paciente3];
+// }
+
+let basePacientes = [];
+
+fetch('/pacientes.json')
+    .then( (res) => res.json())
+    .then( (json) => {
+		basePacientes = json;
+    })
+	.catch( (e) => {
+		console.log(e);
+	})
+
 
 function mostrarDatos(base){
 	let contenedor = "";
@@ -60,7 +72,8 @@ function mostrarDatos(base){
 
 function buscarPaciente(){
 	let nombreBuscar = document.getElementById("buscadorPacientes").value;
-	let pacienteCargado = basePacientes.find(el => el.nombre === nombreBuscar);
+	nombreBuscar.toLowerCase();
+	let pacienteCargado = basePacientes.find(el => el.nombre.toLowerCase() === nombreBuscar);
 	if (pacienteCargado){
 		let indexBuscar = basePacientes.indexOf(pacienteCargado);
 		pacienteCargado = [basePacientes[indexBuscar]];
