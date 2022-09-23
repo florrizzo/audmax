@@ -142,10 +142,10 @@
 		  	</div>
 		</div>
 
-		<table class="audiometria__tabla">
+		<table id="audiometriaTablaHorizontal" class="audiometria__tabla">
 			<thead>
 				<tr>
-					<th class="audiometria__tableHeader">Frecuencia</td>
+					<th class="audiometria__tableHeader">Frecuencia</th> 
 					<th class="audiometria__tableHeader">125</th>
 					<th class="audiometria__tableHeader">250</th>
 					<th class="audiometria__tableHeader">500</th>
@@ -209,9 +209,87 @@
 			</tbody>
 		</table>
 
+		<table id="audiometriaTablaVertical" class="audiometria__tabla">
+			<thead>
+				<tr>
+					<th class="audiometria__tableHeader">Frec.</td>
+					<th class="audiometria__tableHeader">Oído Der.</td>
+					<th class="audiometria__tableHeader">Oído Izq.</td>
+					<th class="audiometria__tableHeader">Enm. Der.</td>
+					<th class="audiometria__tableHeader">Enm. Izq.</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th class="audiometria__tableHeader">125</th>
+					<td id="Der125Ver"></td>
+					<td id="Izq125Ver"></td>
+					<td id="EnmDer125Ver"></td>
+					<td id="EnmIzq125Ver"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">250</th>
+					<td id="Der250Ver"></td>
+					<td id="Izq250Ver"></td>
+					<td id="EnmDer250Ver"></td>
+					<td id="EnmIzq250Ver"></td>
+				</tr>
+				<tr>
+					<th id="audiometria__tableHeader">500</th>
+					<td id="Der500Ver"></td>
+					<td id="Izq500Ver"></td>
+					<td id="EnmDer500Ver"></td>
+					<td id="EnmIzq500Ver"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">1000</th>
+					<td id="Der1000Ver"></td>
+					<td id="Izq1000Ver"></td>
+					<td id="EnmDer1000Ver"></td>
+					<td id="EnmIzq1000Ver"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">1500</th>
+					<td id="Der1500Ver"></td>
+					<td id="Izq1500Ver"></td>
+					<td id="EnmDer1500Ver"></td>
+					<td id="EnmIzq1500Ver"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">2000</th>
+					<td id="Der2000Ver"></td>
+					<td id="Izq2000Ver"></td>
+					<td id="EnmDer2000Ver"></td>
+					<td id="EnmIzq2000Ver"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">4000</th>
+					<td id="Der4000Ver"></td>
+					<td id="Izq4000Ver"></td>
+					<td id="EnmDer4000Ver"></td>
+					<td id="EnmIzq4000Ver"></td>
+				</tr>
+				<tr>
+					<th class="audiometria__tableHeader">6000</th>
+					<td id="Der6000Ver"></td>
+					<td id="Izq6000Ver"></td>
+					<td id="EnmDer6000Ver"></td>
+					<td id="EnmIzq6000Ver"></td>
+				</tr>	
+				<tr>
+					<th class="audiometria__tableHeader">8000</th>
+					<td id="Der8000Ver"></td>
+					<td id="Izq8000Ver"></td>
+					<td id="EnmDer8000Ver"></td>
+					<td id="EnmIzq8000Ver"></td>
+				</tr>
+			</tbody>
+		</table>
+
 		<div class="audiometria__botonesAbajo">
+			<button class="btn__abajo" onclick="cargar()">Cargar</button>
 			<button class="btn__abajo" onclick="graphic()">Graficar</button>
-			<button class="btn__abajo">Guardar</button>
+			<button class="btn__abajo" onclick="guardar()">Guardar</button>
 		</div>
 		<div>
 			<canvas id="myChart"></canvas>

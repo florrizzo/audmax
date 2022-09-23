@@ -43,23 +43,37 @@
 /*------------------------------------------------------------------------------------------------------*/
 	/* Base de Datos */
 
-	.cards {
-		margin-top: 20px;
+	#Pacientes {
+		margin-top: 2rem;
 		display: flex;
-		justify-content: space-evenly;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-content: center;
 	}
 	
 	.property-card {
 		background: rgb(232, 225, 231);
 		box-shadow: 0 0 16px rgba(32, 4, 69, 0.5);
 		width:30%;
-		float: left;
 		margin:1.66%;
 		margin-top: 40px;
 		padding: 10px;
 		border-radius: 20px;
 		text-align: center;
 	}
+
+	@media screen and (max-width: 768px) {
+		.property-card {
+			width:40%;
+		}
+	}
+
+	@media screen and (max-width: 600px) {
+		.property-card {
+			width:80%;
+		}
+	}
+	
 	
 
 /*------------------------------------------------------------------------------------------------------*/
@@ -67,11 +81,19 @@
 
 	.audiometria__panelControl{
 		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
 	}
 
 	.audiometria__signal {
 		width: 40%;
-		margin: 0 2%;
+		margin: 0 1%;
+	}
+
+	@media screen and (max-width: 768px) {
+		.audiometria__signal {
+			width:80%;
+		}
 	}
 
 	.audiometria__signalAux{
@@ -100,12 +122,18 @@
 		display: flex;
 		flex-direction: column;
 		border: 1px solid black;
-		width: 20%;
+		width: 18%;
 		text-align: center;
 		align-items: center;
 		justify-content: center;
 		margin: 0 2%;
 		height: 12rem;
+	}
+
+	@media screen and (max-width: 768px) {
+		.audiometria__controles {
+			width:80%;
+		}
 	}
 
 	.btn__control {
@@ -117,12 +145,18 @@
 	}
 
 	.audiometria__enmascaramiento {
-		width: 30%;
+		width: 32%;
 		border: 1px solid black;
 		text-align: center;
 		padding-top: 1%;
 		margin: 0 2%;
 		height: 12rem;
+	}
+
+	@media screen and (max-width: 768px) {
+		.audiometria__enmascaramiento {
+			width:80%;
+		}
 	}
 
 	.audiometria__tabla {
@@ -132,6 +166,19 @@
 		border-collapse: collapse;
 	}
 
+	#audiometriaTablaVertical {
+		display: none;
+	}
+
+	@media screen and (max-width: 600px) {
+		#audiometriaTablaVertical {
+			display: block;
+			border: none;
+		}
+		#audiometriaTablaHorizontal {
+			display: none;
+		}
+	}
 
 	.btn__abajo {
 		display: inline;

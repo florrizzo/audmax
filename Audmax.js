@@ -29,16 +29,6 @@ class Paciente{
     }
 }
 
-// let basePacientes = JSON.parse(localStorage.getItem("basePacientes"));
-
-// if (basePacientes == null){
-// 	const paciente1 = new Paciente("Hermione", 28, "hermionegranger@gmail.com", 1123344553, "No");
-// 	const paciente2 = new Paciente("Ron", 29, "ronweasly@gmail.com", 1154323678, "Hipoacusia leve en oído izquierdo");
-// 	const paciente3 = new Paciente("Harry", 27, "harrypotter@gmail.com", 1190473250, "Tinnitus en octava de 8000 Hz");
-
-// 	basePacientes = [paciente1, paciente2, paciente3];
-// }
-
 let basePacientes = [];
 
 fetch('/pacientes.json')
@@ -65,6 +55,8 @@ function mostrarDatos(base){
 							
 		}
 		document.getElementById("Pacientes").innerHTML = contenedor;
+		let num = base.length / 3;
+		document.querySelector('body').style.height = 100 + num*30 + '%';
 	} else {
 		document.getElementById("Pacientes").innerHTML = "<p>No se encontraron resultados</p>";
 	}	
@@ -115,15 +107,7 @@ function submitPaciente(){
 	document.getElementById("textoBaseDeDatos").innerHTML = `<p>Se agrego al paciente ${nombre} a la base de datos<p/>`;
 	let mostrarPacienteNuevo = [basePacientes[basePacientes.length-1]];
 	mostrarDatos(mostrarPacienteNuevo);
-	saveStorage();
 }
-
-function saveStorage(){
-	const basePacientesJSON= JSON.stringify(basePacientes);
-	localStorage.setItem('basePacientes', basePacientesJSON);
-}
-
-saveStorage();
 
 // -----------------------------------------------------------------------------
 // AUDIOMETRÍA
@@ -240,6 +224,39 @@ function changeIntensityn5(id){
 	document.getElementById(id).innerHTML = intensity;
 }
 
+let Tabla = [{freq: 125, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 250, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 500, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 1000, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 1500, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 2000, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 4000, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 6000, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+	{freq: 8000, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},
+]
+
+function cargar(){
+	Tabla = JSON.parse(localStorage.getItem("TablaAudiometria"));
+	for (let i = 0; i < 9; i++){
+		try {
+			document.getElementById("Der"+list_frequencies[i]).innerHTML = Tabla[i].oidoDerecho;
+			document.getElementById("Der"+list_frequencies[i]+"Ver").innerHTML = Tabla[i].oidoDerecho;
+		} catch(error){}
+		try {
+			document.getElementById("Izq"+list_frequencies[i]).innerHTML = Tabla[i].oidoIzquierdo;
+			document.getElementById("Izq"+list_frequencies[i]+"Ver").innerHTML = Tabla[i].oidoIzquierdo;
+		} catch(error){}
+		try {
+			document.getElementById("EnmDer"+list_frequencies[i]).innerHTML = Tabla[i].enmDerecho;
+			document.getElementById("EnmDer"+list_frequencies[i]+"Ver").innerHTML = Tabla[i].enmDerecho;
+		} catch(error){}
+		try {
+			document.getElementById("EnmIzq"+list_frequencies[i]).innerHTML = Tabla[i].enmIzquierdo;
+			document.getElementById("EnmIzq"+list_frequencies[i]+"Ver").innerHTML = Tabla[i].enmIzquierdo;
+		} catch(error){}
+	}
+}
+
 function umbralAudiometria(){
 	let frequency = parseInt(document.getElementById("audioFrequency").innerHTML);
 	let intensity = parseInt(document.getElementById("audioIntensity").innerHTML);
@@ -256,213 +273,73 @@ function umbralAudiometria(){
 		}
 	}
 
+	let id = "";
+	let oido = "";
 	if (panValue == 1){
-		switch (frequency){
-			case 125:
-				document.getElementById("Der125").innerHTML = intensity;
-				break;
-			case 250:
-				document.getElementById("Der250").innerHTML = intensity;
-				break;
-			case 500:
-				document.getElementById("Der500").innerHTML = intensity;
-				break;
-			case 1000:
-				document.getElementById("Der1000").innerHTML = intensity;
-				break;
-			case 1500:
-				document.getElementById("Der1500").innerHTML = intensity;
-				break;
-			case 2000:
-				document.getElementById("Der2000").innerHTML = intensity;
-				break;
-			case 4000:
-				document.getElementById("Der4000").innerHTML = intensity;
-				break;
-			case 6000:
-				document.getElementById("Der6000").innerHTML = intensity;
-				break;
-			case 8000:
-				document.getElementById("Der8000").innerHTML = intensity;
-				break;
-		}	
+		oido = "Der"
+		id = oido + frequency;
+		document.getElementById(id).innerHTML = intensity;
+		document.getElementById(id+"Ver").innerHTML = intensity;	
 	} else if (panValue == -1){
-		switch (frequency){
-			case 125:
-				document.getElementById("Izq125").innerHTML = intensity;
-				break;
-			case 250:
-				document.getElementById("Izq250").innerHTML = intensity;
-				break;
-			case 500:
-				document.getElementById("Izq500").innerHTML = intensity;
-				break;
-			case 1000:
-				document.getElementById("Izq1000").innerHTML = intensity;
-				break;
-			case 1500:
-				document.getElementById("Izq1500").innerHTML = intensity;
-				break;
-			case 2000:
-				document.getElementById("Izq2000").innerHTML = intensity;
-				break;
-			case 4000:
-				document.getElementById("Izq4000").innerHTML = intensity;
-				break;
-			case 6000:
-				document.getElementById("Izq6000").innerHTML = intensity;
-				break;
-			case 8000:
-				document.getElementById("Izq8000").innerHTML = intensity;
-				break;
-		}	
+		oido = "Izq";
+		id = oido + frequency;
+		document.getElementById(id).innerHTML = intensity;
+		document.getElementById(id+"Ver").innerHTML = intensity;	
 	} else{
-		switch (frequency){
-			case 125:
-				document.getElementById("Der125").innerHTML = intensity;
-				document.getElementById("Izq125").innerHTML = intensity;
-				break;
-			case 250:
-				document.getElementById("Der250").innerHTML = intensity;
-				document.getElementById("Izq250").innerHTML = intensity;
-				break;
-			case 500:
-				document.getElementById("Der500").innerHTML = intensity;
-				document.getElementById("Izq500").innerHTML = intensity;
-				break;
-			case 1000:
-				document.getElementById("Der1000").innerHTML = intensity;
-				document.getElementById("Izq1000").innerHTML = intensity;
-				break;
-			case 1500:
-				document.getElementById("Der1500").innerHTML = intensity;
-				document.getElementById("Izq1500").innerHTML = intensity;
-				break;
-			case 2000:
-				document.getElementById("Der2000").innerHTML = intensity;
-				document.getElementById("Izq2000").innerHTML = intensity;
-				break;
-			case 4000:
-				document.getElementById("Der4000").innerHTML = intensity;
-				document.getElementById("Izq4000").innerHTML = intensity;
-				break;
-			case 6000:
-				document.getElementById("Der6000").innerHTML = intensity;
-				document.getElementById("Izq6000").innerHTML = intensity;
-				break;
-			case 8000:
-				document.getElementById("Der8000").innerHTML = intensity;
-				document.getElementById("Izq8000").innerHTML = intensity;
-				break;
-		}
+		oido = "Der"
+		id = oido + frequency;
+		document.getElementById(id).innerHTML = intensity;
+		document.getElementById(id+"Ver").innerHTML = intensity;
+		oido = "Izq"
+		id = oido + frequency;
+		document.getElementById(id).innerHTML = intensity;
+		document.getElementById(id+"Ver").innerHTML = intensity;		
 	}
 
-	let enmascarar = document.querySelector('#audiometria__enmascarar:checked').value;
-	
-	if (enmascarar == 1){
+	let enmascarar = "";
+	try {
+		enmascarar = document.querySelector('#audiometria__enmascarar:checked').value;
+	} catch (error) {
+		enmascarar = 0;
+	}
+
+	if (enmascarar  == 1){
 		if (panValue == 1){
-			switch (frequency){
-				case 125:
-					document.getElementById("EnmIzq125").innerHTML = maskIntensity;
-					break;
-				case 250:
-					document.getElementById("EnmIzq250").innerHTML = maskIntensity;
-					break;
-				case 500:
-					document.getElementById("EnmIzq500").innerHTML = maskIntensity;
-					break;
-				case 1000:
-					document.getElementById("EnmIzq1000").innerHTML = maskIntensity;
-					break;
-				case 1500:
-					document.getElementById("EnmIzq1500").innerHTML = maskIntensity;
-					break;
-				case 2000:
-					document.getElementById("EnmIzq2000").innerHTML = maskIntensity;
-					break;
-				case 4000:
-					document.getElementById("EnmIzq4000").innerHTML = maskIntensity;
-					break;
-				case 6000:
-					document.getElementById("EnmIzq6000").innerHTML = maskIntensity;
-					break;
-				case 8000:
-					document.getElementById("EnmIzq8000").innerHTML = maskIntensity;
-					break;
-			}
+			oido = "Izq";
+			id = "Enm" + oido + frequency;
+			document.getElementById(id).innerHTML = maskIntensity;
+			document.getElementById(id+"Ver").innerHTML = maskIntensity;
+			
 		}else if (panValue == -1){
-			switch (frequency){
-				case 125:
-					document.getElementById("EnmDer125").innerHTML = maskIntensity;
-					break;
-				case 250:
-					document.getElementById("EnmDer250").innerHTML = maskIntensity;
-					break;
-				case 500:
-					document.getElementById("EnmDer500").innerHTML = maskIntensity;
-					break;
-				case 1000:
-					document.getElementById("EnmDer1000").innerHTML = maskIntensity;
-					break;
-				case 1500:
-					document.getElementById("EnmDer1500").innerHTML = maskIntensity;
-					break;
-				case 2000:
-					document.getElementById("EnmDer2000").innerHTML = maskIntensity;
-					break;
-				case 4000:
-					document.getElementById("EnmDer4000").innerHTML = maskIntensity;
-					break;
-				case 6000:
-					document.getElementById("EnmDer6000").innerHTML = maskIntensity;
-					break;
-				case 8000:
-					document.getElementById("EnmDer8000").innerHTML = maskIntensity;
-					break;
-			}
+			oido = "Der";
+			id = "Enm" + oido + frequency;
+			document.getElementById(id).innerHTML = maskIntensity;
+			document.getElementById(id+"Ver").innerHTML = maskIntensity;
+			
 		}else {
-			switch (frequency){
-				case 125:
-					document.getElementById("EnmDer125").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq125").innerHTML = maskIntensity;
-					break;
-				case 250:
-					document.getElementById("EnmDer250").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq250").innerHTML = maskIntensity;
-					break;
-				case 500:
-					document.getElementById("EnmDer500").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq500").innerHTML = maskIntensity;
-					break;
-				case 1000:
-					document.getElementById("EnmDer1000").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq1000").innerHTML = maskIntensity;
-					break;
-				case 1500:
-					document.getElementById("EnmDer1500").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq1500").innerHTML = maskIntensity;
-					break;
-				case 2000:
-					document.getElementById("EnmDer2000").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq2000").innerHTML = maskIntensity;
-					break;
-				case 4000:
-					document.getElementById("EnmDer4000").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq4000").innerHTML = maskIntensity;
-					break;
-				case 6000:
-					document.getElementById("EnmDer6000").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq6000").innerHTML = maskIntensity;
-					break;
-				case 8000:
-					document.getElementById("EnmDer8000").innerHTML = maskIntensity;
-					document.getElementById("EnmIzq8000").innerHTML = maskIntensity;
-					break;
-			}
+			oido = "Izq";
+			id = "Enm" + oido + frequency;
+			document.getElementById(id).innerHTML = maskIntensity;
+			document.getElementById(id+"Ver").innerHTML = maskIntensity;
+			oido = "Der";
+			id = "Enm" + oido + frequency;
+			document.getElementById(id).innerHTML = maskIntensity;
+			document.getElementById(id+"Ver").innerHTML = maskIntensity;
 		}
+	} else {
+		oido = "Izq";
+		id = "Enm" + oido + frequency;
+		document.getElementById(id).innerHTML = 0;
+		document.getElementById(id+"Ver").innerHTML = 0;
+		oido = "Der";
+		id = "Enm" + oido + frequency;
+		document.getElementById(id).innerHTML = 0;
+		document.getElementById(id+"Ver").innerHTML = 0;
 	}
 }
 
+
+// Graficar
 let myChart;
 
 function graphic(){
@@ -550,6 +427,33 @@ function graphic(){
 		document.getElementById('myChart'),
 		config
 	);
+}
+
+
+// Guardar
+
+function guardar(){
+	for (let i = 0; i < 9; i++){
+		try {
+			Tabla[i].oidoDerecho = document.getElementById("Der"+list_frequencies[i]).innerHTML;
+		} catch(error){}
+		try {
+			Tabla[i].oidoIzquierdo = document.getElementById("Izq"+list_frequencies[i]).innerHTML;
+		} catch(error){}
+		try {
+			Tabla[i].enmDerecho = document.getElementById("EnmDer"+list_frequencies[i]).innerHTML;
+		} catch(error){}
+		try {
+			Tabla[i].enmIzquierdo = document.getElementById("EnmIzq"+list_frequencies[i]).innerHTML;
+		} catch(error){}
+	}
+	saveStorage();	
+}
+
+function saveStorage(){
+	const TablaJSON= JSON.stringify(Tabla);
+	localStorage.setItem('TablaAudiometria', TablaJSON);
+	console.log(TablaJSON)
 }
 
 
