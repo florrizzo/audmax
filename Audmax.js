@@ -20,8 +20,9 @@ document.getElementById("defaultOpen").click();
 // Base de datos de pacientes
 
 class Paciente{
-    constructor(nombre, edad, mail, telefono, patologia) {
+    constructor(nombre, apellido, edad, mail, telefono, patologia) {
         this.nombre = nombre;
+		this.apellido = apellido;
         this.edad   = edad;
         this.mail  = mail;
 		this.telefono = telefono;
@@ -47,6 +48,7 @@ function mostrarDatos(base){
 		for (const paciente of base) {
 			contenedor +=`<div class="property-card">
 									<h3> Nombre: ${paciente.nombre}</h3>
+									<h3> Apellido: ${paciente.apellido}</h3>
 									<p>  Edad: ${paciente.edad}</p>
 									<p>  Mail: ${paciente.mail}</p>
 									<p>  Teléfono: ${paciente.telefono}</p>
@@ -76,37 +78,92 @@ function buscarPaciente(){
 }
 
 function nuevoPaciente(){
-	let contenedor = `<div>
-			<label for="nombre">Nombre:</label>
-			<input id="nombre" type="text">
+	let contenedor = `
+	<fieldset class="container mt-3 p-4">
+		<form name="myForm">
+			<div class="containers">			
+				<div class="row">
+					<div class="col">
+						<div class="mb-3">
+							<label for="nombre" class="form-label">Nombre</label>
+							<input type="input" class="form-control" id="nombre" name="nombre" placeholder="Arya" required>
+						</div>
+					</div>
+					<div class="col">
+						<div class="mb-3">
+							<label for="apellido" class="form-label">Apellido</label>
+							<input type="input" class="form-control" id="apellido" name="apellido" placeholder="Stark" required>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<div class="mb-3">
+							<label for="edad" class="form-label">Edad</label>
+							<input type="input" class="form-control" id="edad" name="edad" placeholder="20">
+						</div>
+					</div>
+					<div class="col">
+						<div class="mb-3">
+							<label for="telefono" class="form-label">Teléfono</label>
+							<input type="input" class="form-control" id="telefono" name="telefono">
+						</div>
+					</div>
+					<div class="col">
+						<div class="mb-3">
+							<label for="mail" class="form-label">Mail</label>
+							<input type="email" class="form-control" id="mail" name="email" placeholder="aryastark@gmail.com" pattern=".+@globex\.com">
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="mb-3">
+					<label for="patologia" class="form-label">Patología</label>
+					<textarea class="form-control" id="patologia" name="patologia" rows="4"></textarea>
+				</div>
+
+				<div>
+					<button type="submit" onclick="submitPaciente()" class="btn btn-light">Submit</button>
+				</div> 
 			</div>
-			<div>
-				<label for="edad">Edad:</label>
-				<input id="edad" type="text">
-			</div>
-			<div>
-				<label for="mail">Mail:</label>
-				<input id="mail" type="text">
-			</div>
-			<div>
-				<label for="telefono">Teléfono:</label>
-				<input id="telefono" type="text">
-			</div>
-			<div>
-				<label for="patologia">Patología:</label>
-				<input id="patologia" type="text">
-			</div>
-			<button onclick="submitPaciente()">Submit</button>`
+		</form>
+	</fieldset>
+		`
 	document.getElementById("Pacientes").innerHTML = contenedor;
 }
 
 function submitPaciente(){
-	const pacienteNuevo = new Paciente(document.getElementById("nombre").value, document.getElementById("edad").value, document.getElementById("mail").value, document.getElementById("telefono").value, document.getElementById("patologia").value);
-	basePacientes = [...basePacientes, pacienteNuevo];
-	const {nombre} = pacienteNuevo; 
-	document.getElementById("textoBaseDeDatos").innerHTML = `<p>Se agrego al paciente ${nombre} a la base de datos<p/>`;
-	let mostrarPacienteNuevo = [basePacientes[basePacientes.length-1]];
-	mostrarDatos(mostrarPacienteNuevo);
+	let x = document.forms["myForm"]["nombre"].value;
+	let y = document.forms["myForm"]["apellido"].value;
+	let z = document.forms["myForm"]["edad"].value;
+	let j = document.forms["myForm"]["telefono"].value;
+	let k = document.forms["myForm"]["email"].value;
+	let numbers = /^[0-9]+$/;
+  	if (x == "") {
+    	alert('El campo "Nombre" debe completarse');
+    return false;
+	} else if (y == "") {
+		alert('El campo "Apellido" debe completarse');
+		return false;
+	} else if (!(z.match(numbers))){
+		alert('El campo "Edad" solo debe contener números');
+		return false;	
+	} else if (!(j.match(numbers))){
+		alert('El campo "Telefono" solo debe contener números');
+		return false;
+	} else if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)+$/.test(k))){
+		alert('El campo "Email" no coincide con el formato');
+		return false;
+	} else {
+		const pacienteNuevo = new Paciente(document.getElementById("nombre").value, document.getElementById("apellido").value, document.getElementById("edad").value, document.getElementById("mail").value, document.getElementById("telefono").value, document.getElementById("patologia").value);
+		basePacientes = [...basePacientes, pacienteNuevo];
+		const {nombre} = pacienteNuevo; 
+		document.getElementById("textoBaseDeDatos").innerHTML = `<p>Se agrego al paciente ${nombre} a la base de datos<p/>`;
+		let mostrarPacienteNuevo = [basePacientes[basePacientes.length-1]];
+		mostrarDatos(mostrarPacienteNuevo);
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -222,6 +279,76 @@ function changeIntensityn5(id){
 	}
 	// Devolver valor del indice
 	document.getElementById(id).innerHTML = intensity;
+}
+
+const noise = new Tone.Noise("pink");
+let panner = new Tone.Panner();
+panner.toDestination();
+
+function mask(){
+	let ele = document.getElementsByName('tipoEnmascaramiento');
+	let maskBandaValue;
+
+	// volume	
+	let intensity = parseInt(document.getElementById("maskIntensity").innerHTML);
+	let maskListIntensitiesdB = [-10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95];
+	let maskListIntensities = [-65, -62.5, -60, -57.5, -55, -52.5, -50, -47.5, -45, -42.5, -40, -37.5, -35, -32.5, -30, -27.5, -25, -22.5, -20, -17.5, -15, -12.5];
+
+	let index = maskListIntensitiesdB.indexOf(intensity);
+	intensity = maskListIntensities[index];
+	noise.volume.value = intensity;
+
+	// Paneo
+	let elem = document.getElementsByName('oidoAudiometria');
+	let panValue = "";
+	let maskPanValue = "";
+              
+	for(i = 0; i < elem.length; i++) {
+		if(elem[i].checked){
+			panValue = document.querySelector('input[name="oidoAudiometria"]:checked').value;
+			break;
+		} else {
+			panValue = 0;
+		}
+	}
+	
+	if (panValue == 1){
+		maskPanValue = -1;
+	} else if (panValue == -1){
+		maskPanValue = 1;
+	}
+
+	panner.pan.value = maskPanValue;	
+
+    // Tipo de ruido de enmascaramiento   
+	for(i = 0; i < ele.length; i++) {
+		if(ele[i].checked){
+			maskBandaValue = document.querySelector('input[name="tipoEnmascaramiento"]:checked').value;
+			break;
+		} else {
+			maskBandaValue = 0;
+		}
+	}
+
+	let maskValue; 
+	if(document.querySelector('input[id="audiometria__enmascarar"]:checked')){
+		maskValue = document.querySelector('input[id="audiometria__enmascarar"]:checked').value;
+		if (maskValue == 1){
+			if (maskBandaValue == 1){
+				noise.type = "white";
+				noise.connect(panner);
+				noise.start();
+			}else if (maskBandaValue == -1){	
+				noise.type = "pink";
+				noise.connect(panner);			
+				noise.start();			
+			} else {
+				alert('Debe seleccionar un tipo de enmascaramiento');
+			}
+		}		
+	} else {
+		noise.stop("0,01");
+	};
 }
 
 let Tabla = [{freq: 125, oidoDerecho: "", oidoIzquierdo: "", enmDerecho: "", enmIzquierdo: ""},

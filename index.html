@@ -3,9 +3,11 @@
 <head>
 	<title>AUDMAX</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="Audmax.css">
-	
+	<!-- Bootstrap 5.2 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="Audmax.css">	
 </head>
+
 <body>
 	<button class="tablink" onclick="openPage('vistaPrincipal', this, '#777')">Vista Principal</button>
 	<button class="tablink" onclick="openPage('baseDatos', this, '#777')" id="defaultOpen">Base de Datos</button>
@@ -15,24 +17,28 @@
 	
 	<!-- VISTA PRINCIPAL -->
 	<div id="vistaPrincipal" class="tabcontent">
-		<h1>AUDMAX AR14</h1>
-		<p>Audmax es un audiómetro online que permite realizar los estudios de audiometría y logoaudiometría para medir la audición del paciente.</p>
-		<p>En la pestaña "Calibración" vas a poder calibrar la página según el hardware que utilices. La intensidad con la que se reproduce un audio depende de cada sistema de reproducción, por lo que para que estos estudios tengan validez es necesario medir los niveles de reproducción según dice el audiómetro y cargar en esta pestaña de calibración las diferencias que hayan.</p>
-		<p>En la pestaña “Audiometría” vas a poder realizar todas las configuraciones necesarias para poder realizar las pruebas de audiometría tonal.</p>
-		<p>En la pestaña “Logoaudiometría” vas a poder realizar todas las configuraciones necesarias para poder realizar las pruebas de Logoaudiometría.</p>
+		<div class="container">
+			<h1>AUDMAX AR14</h1>
+			<p>Audmax es un audiómetro online que permite realizar los estudios de audiometría y logoaudiometría para medir la audición del paciente.</p>
+			<p>En la pestaña "Calibración" vas a poder calibrar la página según el hardware que utilices. La intensidad con la que se reproduce un audio depende de cada sistema de reproducción, por lo que para que estos estudios tengan validez es necesario medir los niveles de reproducción según dice el audiómetro y cargar en esta pestaña de calibración las diferencias que hayan.</p>
+			<p>En la pestaña “Audiometría” vas a poder realizar todas las configuraciones necesarias para poder realizar las pruebas de audiometría tonal.</p>
+			<p>En la pestaña “Logoaudiometría” vas a poder realizar todas las configuraciones necesarias para poder realizar las pruebas de Logoaudiometría.</p>
+		</div>
 	</div>
 
 	<!-- BASE DE DATOS -->
 	<div id="baseDatos" class="tabcontent">
-		<h1>Base de Datos</h1>
-		<button onclick="mostrarDatos(basePacientes)">Lista de pacientes</button>
-		<input id="buscadorPacientes" type="text" placeholder="Nombre">
-		<button onclick="buscarPaciente()">Buscar</button>
-		<button onclick="nuevoPaciente()">Nuevo</button>
-		<form id="nuevoPaciente">
-		</form>
-		<div id="textoBaseDeDatos"></div>
-		<div id="Pacientes"></div>
+		<div class="container">
+			<h1>Base de Datos</h1>
+			<button onclick="mostrarDatos(basePacientes)" class="btn btn-light">Lista de pacientes</button>
+			<input id="buscadorPacientes" type="text" placeholder="Nombre" class="form-control form-control2">
+			<button onclick="buscarPaciente()" class="btn btn-light">Buscar</button>
+			<button onclick="nuevoPaciente()" class="btn btn-light">Nuevo</button>
+			<form id="nuevoPaciente">
+			</form>
+			<div id="textoBaseDeDatos"></div>
+			<div id="Pacientes"></div>
+		</div>
 	</div>
 
 	<!-- CALIBRACIÓN -->
@@ -122,22 +128,20 @@
 		  	</div>
 
 			<div class="audiometria__enmascaramiento">
-				<input id="audiometria__enmascarar" type="checkbox" value="1">
+				<input id="audiometria__enmascarar" type="checkbox" value="1" onclick="mask()">
 				<label for="audiometria__enmascarar">Enmascarar</label>
 				<p>Tipo de enmascaramiento:</p>
 				<div>
-					<input name="tipoEnmascaramiento" id="bandaAncha" type="radio">
+					<input name="tipoEnmascaramiento" id="bandaAncha" value="1" type="radio">
 					<label for="bandaAncha">Ruido de banda ancha</label>
 				</div>
 				<div>
-					<input name="tipoEnmascaramiento" id="bandaEstrecha" type="radio">
+					<input name="tipoEnmascaramiento" id="bandaEstrecha" value="-1" type="radio">
 					<label for="bandaEstrecha">Ruido de banda estrecha</label>
 				</div>
 				<p class="pinline">Intensidad:</p>
 			  	<button onclick="changeIntensityn5('maskIntensity')">-5</button>
-			  	<button onclick="changeIntensityn1('maskIntensity')">-1</button>
 			  	<p id="maskIntensity" class="pinline">0 dBHL</p>
-			  	<button onclick="changeIntensityp1('maskIntensity')">+ 1</button>
 			  	<button onclick="changeIntensityp5('maskIntensity')">+ 5</button>	
 		  	</div>
 		</div>
@@ -459,10 +463,10 @@
 	  	</div>				
 	</div>
 
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.43/Tone.js"></script>
 	<!-- Incluyendo librería Chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<!-- Script para tabs --> 
+	<!-- Mi script --> 
 	<script type="text/javascript" src="Audmax.js"></script>
 
 </body>
