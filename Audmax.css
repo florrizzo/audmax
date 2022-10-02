@@ -8,6 +8,7 @@
 	  		margin: 0;
   			font-family: Arial;
   			text-align: center;
+			background-color: #e3e2de;
 		}
 
 	#vistaPrincipal {
@@ -172,6 +173,12 @@
 		border-collapse: collapse;
 	}
 
+	.audiometria__tablas {
+		justify-content: center;
+		text-align: center;
+		align-items: center;
+	}
+
 	#audiometriaTablaVertical {
 		display: none;
 	}
@@ -180,6 +187,7 @@
 		#audiometriaTablaVertical {
 			display: block;
 			border: none;
+			width: 60%;
 		}
 		#audiometriaTablaHorizontal {
 			display: none;

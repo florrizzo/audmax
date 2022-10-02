@@ -134,27 +134,37 @@ function nuevoPaciente(){
 	document.getElementById("Pacientes").innerHTML = contenedor;
 }
 
+function sweetAlert(mensaje){
+	Swal.fire({
+		title: 'Error!',
+		text: mensaje,
+		icon: 'error',
+		confirmButtonText: 'Ok'
+	})
+	
+}
+
 function submitPaciente(){
 	let x = document.forms["myForm"]["nombre"].value;
 	let y = document.forms["myForm"]["apellido"].value;
-	let z = document.forms["myForm"]["edad"].value;
+	let z = parseInt(document.forms["myForm"]["edad"].value);
 	let j = document.forms["myForm"]["telefono"].value;
 	let k = document.forms["myForm"]["email"].value;
 	let numbers = /^[0-9]+$/;
   	if (x == "") {
-    	alert('El campo "Nombre" debe completarse');
+    	sweetAlert('El campo "Nombre" debe completarse');
     return false;
 	} else if (y == "") {
-		alert('El campo "Apellido" debe completarse');
+		sweetAlert('El campo "Apellido" debe completarse');
 		return false;
-	} else if (!(z.match(numbers))){
-		alert('El campo "Edad" solo debe contener números');
+	} else if (isNaN(z)){
+		sweetAlert('El campo "Edad" solo debe contener números');
 		return false;	
 	} else if (!(j.match(numbers))){
-		alert('El campo "Telefono" solo debe contener números');
+		sweetAlert('El campo "Telefono" solo debe contener números');
 		return false;
 	} else if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)+$/.test(k))){
-		alert('El campo "Email" no coincide con el formato');
+		sweetAlert('El campo "Email" no coincide con el formato');
 		return false;
 	} else {
 		const pacienteNuevo = new Paciente(document.getElementById("nombre").value, document.getElementById("apellido").value, document.getElementById("edad").value, document.getElementById("mail").value, document.getElementById("telefono").value, document.getElementById("patologia").value);
@@ -343,7 +353,7 @@ function mask(){
 				noise.connect(panner);			
 				noise.start();			
 			} else {
-				alert('Debe seleccionar un tipo de enmascaramiento');
+				sweetAlert('Debe seleccionar un tipo de enmascaramiento');
 			}
 		}		
 	} else {
