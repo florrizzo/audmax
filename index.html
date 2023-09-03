@@ -9,11 +9,10 @@
 </head>
 
 <body>
-	<button class="tablink" onclick="openPage('vistaPrincipal', this, '#777')">Vista Principal</button>
-	<button class="tablink" onclick="openPage('baseDatos', this, '#777')" id="defaultOpen">Base de Datos</button>
+	<button class="tablink" onclick="openPage('vistaPrincipal', this, '#777')" id="defaultOpen">Vista Principal</button>
 	<button class="tablink" onclick="openPage('calibracion', this, '#777')">Calibración</button>
 	<button class="tablink" onclick="openPage('audiometria', this, '#777')">Audiometría</button>
-	<button class="tablink" onclick="openPage('logoaudiometria', this, '#777')" id="defaultOpen">Logoaudiometría</button>
+	<button class="tablink" onclick="openPage('logoaudiometria', this, '#777')">Logoaudiometría</button>
 	
 	<!-- VISTA PRINCIPAL -->
 	<div id="vistaPrincipal" class="tabcontent">
@@ -26,20 +25,7 @@
 		</div>
 	</div>
 
-	<!-- BASE DE DATOS -->
-	<div id="baseDatos" class="tabcontent">
-		<div class="container">
-			<h1>Base de Datos</h1>
-			<button onclick="mostrarDatos(basePacientes)" class="btn btn-light">Lista de pacientes</button>
-			<input id="buscadorPacientes" type="text" placeholder="Nombre" class="form-control form-control2">
-			<button onclick="buscarPaciente()" class="btn btn-light">Buscar</button>
-			<button onclick="nuevoPaciente()" class="btn btn-light">Nuevo</button>
-			<form id="nuevoPaciente">
-			</form>
-			<div id="textoBaseDeDatos"></div>
-			<div id="Pacientes"></div>
-		</div>
-	</div>
+
 
 	<!-- CALIBRACIÓN -->
 	<div id="calibracion" class="tabcontent">
@@ -93,11 +79,11 @@
 					</div>
 					<div class="audiometria__tipoSignal">
 						<p>Tipo de señal:</p>
-						<input name="tipoSignal" id="continua" type="radio">
+						<input name="tipoSignal" id="continua" value="continua" type="radio">
 						<label for="continua">Continua</label>
-						<input name="tipoSignal" id="pulsada" type="radio">
+						<input name="tipoSignal" id="pulsada" value="pulsada" type="radio">
 						<label for="pulsada">Pulsada</label>
-						<input name="tipoSignal" id="manual" type="radio">
+						<input name="tipoSignal" id="manual" value="manual" type="radio">
 						<label for="manual">Manual</label>
 					</div>
 				</div>
@@ -113,7 +99,7 @@
 				  	</div>
 				  	<div>
 						<p class="pinline">Intensidad [dBHL]:</p>
-						<button onclick="changeIntensityn5('audioIntensity')">-5</button>
+						<button onclick="changeIntensityn5('audioIntensity', 'audio')">-5</button>
 						<button onclick="changeIntensityn1('audioIntensity')">- 1</button>
 						<p id="audioIntensity" class="pinline">10</p>
 						<button onclick="changeIntensityp1('audioIntensity')">+ 1</button>
@@ -123,7 +109,7 @@
 			</div>
 			
 			<div class="audiometria__controles">
-				<button onclick="playNote(2000)" class="btn__control">Reproducir tono</button>
+				<button onclick="playNote(5000)" class="btn__control" id="reproducirTono">Reproducir tono</button>
 				<button onclick="umbralAudiometria()" class="btn__control">Añadir umbral</button>
 		  	</div>
 
@@ -139,9 +125,9 @@
 					<input name="tipoEnmascaramiento" id="bandaEstrecha" value="-1" type="radio">
 					<label for="bandaEstrecha">Ruido de banda estrecha</label>
 				</div>
-				<p class="pinline">Intensidad:</p>
-			  	<button onclick="changeIntensityn5('maskIntensity')">-5</button>
-			  	<p id="maskIntensity" class="pinline">0 dBHL</p>
+				<p class="pinline">Intensidad [dBHL]:</p>
+			  	<button onclick="changeIntensityn5('maskIntensity', 'mask')">-5</button>
+			  	<p id="maskIntensity" class="pinline">5</p>
 			  	<button onclick="changeIntensityp5('maskIntensity')">+ 5</button>	
 		  	</div>
 		</div>
@@ -311,49 +297,49 @@
 		<div class="logoaudiometria__listas">
 			<div class="logoaudiometria__listas1" id="listasAdultos1">
 				<p>Listas adultos:</p>
-				<button onclick="music('./audios/listas_adultos1/adultos1_A1.wav')" class="btn__logoLista1">A1</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_B1.wav')" class="btn__logoLista1">B1</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_C1.wav')" class="btn__logoLista1">C1</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_A2.wav')" class="btn__logoLista1">A2</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_B2.wav')" class="btn__logoLista1">B2</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_C2.wav')" class="btn__logoLista1">C2</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_A3.wav')" class="btn__logoLista1">A3</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_B3.wav')" class="btn__logoLista1">B3</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_C3.wav')" class="btn__logoLista1">C3</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_A4.wav')" class="btn__logoLista1">A4</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_B4.wav')" class="btn__logoLista1">B4</button>
-				<button onclick="music('./audios/listas_adultos1/adultos1_C4.wav')" class="btn__logoLista1">C4</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A1.wav'); tablalogo(adultos1_A1)" class="btn__logoLista1">A1</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B1.wav'); tablalogo(adultos1_B1)" class="btn__logoLista1">B1</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C1.wav'); tablalogo(adultos1_C1)" class="btn__logoLista1">C1</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A2.wav'); tablalogo(adultos1_A2)" class="btn__logoLista1">A2</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B2.wav'); tablalogo(adultos1_B2)" class="btn__logoLista1">B2</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C2.wav'); tablalogo(adultos1_C2)" class="btn__logoLista1">C2</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A3.wav'); tablalogo(adultos1_A3)" class="btn__logoLista1">A3</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B3.wav'); tablalogo(adultos1_B3)" class="btn__logoLista1">B3</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C3.wav'); tablalogo(adultos1_C3)" class="btn__logoLista1">C3</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_A4.wav'); tablalogo(adultos1_A4)" class="btn__logoLista1">A4</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_B4.wav'); tablalogo(adultos1_B4)" class="btn__logoLista1">B4</button>
+				<button onclick="music('./audios/listas_adultos1/adultos1_C4.wav'); tablalogo(adultos1_C4)" class="btn__logoLista1">C4</button>
 			</div>
 			<div class="logoaudiometria__listas1" id="listasAdultos2">
 				<p>Listas adultos 2:</p>
-				<button onclick="music('./audios/listas_adultos2/adultos2_A1.wav')" class="btn__logoLista1">A1</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_B1.wav')" class="btn__logoLista1">B1</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_C1.wav')" class="btn__logoLista1">C1</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_A2.wav')" class="btn__logoLista1">A2</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_B2.wav')" class="btn__logoLista1">B2</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_C2.wav')" class="btn__logoLista1">C2</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_A3.wav')" class="btn__logoLista1">A3</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_B3.wav')" class="btn__logoLista1">B3</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_C3.wav')" class="btn__logoLista1">C3</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_A4.wav')" class="btn__logoLista1">A4</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_B4.wav')" class="btn__logoLista1">B4</button>
-				<button onclick="music('./audios/listas_adultos2/adultos2_C4.wav')" class="btn__logoLista1">C4</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A1.wav'); tablalogo(adultos2_A1)" class="btn__logoLista1">A1</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B1.wav'); tablalogo(adultos2_B1)" class="btn__logoLista1">B1</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C1.wav'); tablalogo(adultos2_C1)" class="btn__logoLista1">C1</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A2.wav'); tablalogo(adultos2_A2)" class="btn__logoLista1">A2</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B2.wav'); tablalogo(adultos2_B2)" class="btn__logoLista1">B2</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C2.wav'); tablalogo(adultos2_C2)" class="btn__logoLista1">C2</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A3.wav'); tablalogo(adultos2_A3)" class="btn__logoLista1">A3</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B3.wav'); tablalogo(adultos2_B3)" class="btn__logoLista1">B3</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C3.wav'); tablalogo(adultos2_C3)" class="btn__logoLista1">C3</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_A4.wav'); tablalogo(adultos2_A4)" class="btn__logoLista1">A4</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_B4.wav'); tablalogo(adultos2_B4)" class="btn__logoLista1">B4</button>
+				<button onclick="music('./audios/listas_adultos2/adultos2_C4.wav'); tablalogo(adultos2_C4)" class="btn__logoLista1">C4</button>
 			</div>
 
 			<div class="logoaudiometria__listas2">
 				<p>Listas niños:</p>
-				<button onclick="music('./audios/listas_ninos/ninos_A1.wav')" class="btn__logoLista2">A1</button>
-				<button onclick="music('./audios/listas_ninos/ninos_B1.wav')" class="btn__logoLista2">B1</button>
-				<button onclick="music('./audios/listas_ninos/ninos_A2.wav')" class="btn__logoLista2">A2</button>
-				<button onclick="music('./audios/listas_ninos/ninos_B2.wav')" class="btn__logoLista2">B2</button>
-				<button onclick="music('./audios/listas_ninos/ninos_A3.wav')" class="btn__logoLista2">A3</button>			
+				<button onclick="music('./audios/listas_ninos/ninos_A1.wav'); tablalogo(ninos_A1)" class="btn__logoLista2">A1</button>
+				<button onclick="music('./audios/listas_ninos/ninos_B1.wav'); tablalogo(ninos_B1)" class="btn__logoLista2">B1</button>
+				<button onclick="music('./audios/listas_ninos/ninos_A2.wav'); tablalogo(ninos_A2)" class="btn__logoLista2">A2</button>
+				<button onclick="music('./audios/listas_ninos/ninos_B2.wav'); tablalogo(ninos_B2)" class="btn__logoLista2">B2</button>
+				<button onclick="music('./audios/listas_ninos/ninos_A3.wav'); tablalogo(ninos_A3)" class="btn__logoLista2">A3</button>			
 			</div>
 
 			<div class="logoaudiometria__listas3">
 				<p>Listas monosilábicas:</p>
-				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M1.wav')" class="btn__logoLista3">M1</button>
-				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M2.wav')" class="btn__logoLista3">M2</button>
-				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M3.wav')" class="btn__logoLista3">M3</button>			
+				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M1.wav'); tablalogo(monosilabicas_M1)" class="btn__logoLista3">M1</button>
+				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M2.wav'); tablalogo(monosilabicas_M2)" class="btn__logoLista3">M2</button>
+				<button onclick="music('./audios/listas_monosilabicas/monosilabicas_M3.wav'); tablalogo(monosilabicas_M3)" class="btn__logoLista3">M3</button>			
 			</div>
 	
 			<div class="logoaudiometria__enmascaramiento">
@@ -368,12 +354,10 @@
 					  <input name="tipoEnmascaramiento" id="bandaEstrecha" type="radio">
 					<label for="bandaEstrecha">Ruido Verbal</label>
 				</div>
-				<p class="pinline">Intensidad:</p>
-				<button>- 1</button>
-				<button>- 5</button>
-				<p class="pinline">0 dBHL</p>
-				<button>+ 1</button>
-				<button>+ 5</button>	
+				<p class="pinline">Intensidad [dBHL]:</p>
+				<button onclick="changeIntensityn5('logoMaskIntensity', 'mask')">- 5</button>
+				<p class="pinline" id="logoMaskIntensity">5</p>
+				<button onclick="changeIntensityp5('logoMaskIntensity')">+ 5</button>	
 			</div>
 		</div>
 
@@ -381,38 +365,39 @@
 			<div class="logoaudiometria__signal">
 				<div class="logoaudiometria__oido">
 					<p>Oído:</p>
-					<input name="oido" id="derecho" type="radio">
+					<input name="oidoLogo" id="derecho" value=1 type="radio">
 					<label for="derecho">Derecho</label>
-					<input name="oido" id="izquierdo" type="radio">
+					<input name="oidoLogo" id="izquierdo" value=-1 type="radio">
 					<label for="izquierdo">Izquierdo</label>
-					<input name="oido" id="ambos" type="radio">
+					<input name="oidoLogo" id="ambos" value=0 type="radio">
 					<label for="ambos">Ambos</label>			
 				  </div>
 				<div class="logoaudiometria__intensidad">
-					<p class="pinline">Intensidad:</p>
-					<button>- 1</button>
-					<button>- 5</button>
-					<p class="pinline">0 dBHL</p>
-					<button>+ 1</button>
-					<button>+ 5</button>
+					<p class="pinline">Intensidad [dBHL]:</p>
+					<button onclick="changeIntensityn5('logoIntensity', 'audio')">- 5</button>
+					<button onclick="changeIntensityn1('logoIntensity')">- 1</button>
+					<p class="pinline" id="logoIntensity">0</p>
+					<button onclick="changeIntensityp1('logoIntensity')">+ 1</button>
+					<button onclick="changeIntensityp5('logoIntensity')">+ 5</button>
 				</div>
 			</div>
 			<div class="logoaudiometria__controles">
 				<div>
-					<button class="btn__logoControl">Reproducir Lista</button>
+					<button onclick="playAudio()" class="btn__logoControl">Reproducir Lista</button>
 				</div>
 				<div>
-					<button id="btn__logoCorrecto"></button>
-					<button id="btn__logoIncorrecto"></button>
+					<button onclick="verdeRojo('verde')" id="btn__logoCorrecto"></button>
+					<button onclick="verdeRojo('rojo')" id="btn__logoIncorrecto"></button>
 				</div>
 				<div>
-				  <button onclick="logoaudio.play()" class="btn__logoControl">Play/Pausa</button>
+				  <button onclick="playPause()" class="btn__logoControl">Play/Pausa</button>
 				</div>
 				<div>
-				  <button class="btn__logoControl">Finalizar Lista</button>
+				  <button onclick="stop()" class="btn__logoControl">Finalizar Lista</button>
 				</div>
 			</div>
-	
+			
+
 			<table class="logoaudiometria__tabla">
 				<thead>
 					<tr>
@@ -421,39 +406,74 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td" id="tablaLogo0"></td>
+						<td class="logoaudiometria__td" id="tablaLogo1"></td>
+						<td class="logoaudiometria__td" id="tablaLogo2"></td>
+						<td class="logoaudiometria__td" id="tablaLogo3"></td>
+						<td class="logoaudiometria__td" id="tablaLogo4"></td>
 					</tr>
 					<tr>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td" id="tablaLogo5"></td>
+						<td class="logoaudiometria__td" id="tablaLogo6"></td>
+						<td class="logoaudiometria__td" id="tablaLogo7"></td>
+						<td class="logoaudiometria__td" id="tablaLogo8"></td>
+						<td class="logoaudiometria__td" id="tablaLogo9"></td>
 					</tr>
 					<tr>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td" id="tablaLogo10"></td>
+						<td class="logoaudiometria__td" id="tablaLogo11"></td>
+						<td class="logoaudiometria__td" id="tablaLogo12"></td>
+						<td class="logoaudiometria__td" id="tablaLogo13"></td>
+						<td class="logoaudiometria__td" id="tablaLogo14"></td>
 					</tr>
 					<tr>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td" id="tablaLogo15"></td>
+						<td class="logoaudiometria__td" id="tablaLogo16"></td>
+						<td class="logoaudiometria__td" id="tablaLogo17"></td>
+						<td class="logoaudiometria__td" id="tablaLogo18"></td>
+						<td class="logoaudiometria__td" id="tablaLogo19"></td>
 					</tr>
 					<tr>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
-						<td class="logoaudiometria__td"></td>
+						<td class="logoaudiometria__td" id="tablaLogo20"></td>
+						<td class="logoaudiometria__td" id="tablaLogo21"></td>
+						<td class="logoaudiometria__td" id="tablaLogo22"></td>
+						<td class="logoaudiometria__td" id="tablaLogo23"></td>
+						<td class="logoaudiometria__td" id="tablaLogo24"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td hide" id="tablaLogo25"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo26"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo27"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo28"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo29"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td hide" id="tablaLogo30"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo31"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo32"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo33"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo34"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td hide" id="tablaLogo35"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo36"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo37"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo38"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo39"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td hide" id="tablaLogo40"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo41"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo42"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo43"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo44"></td>
+					</tr>
+					<tr>
+						<td class="logoaudiometria__td hide" id="tablaLogo45"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo46"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo47"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo48"></td>
+						<td class="logoaudiometria__td hide" id="tablaLogo49"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -472,8 +492,15 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.43/Tone.js"></script>
 	<!-- Librería Chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<!-- Palabras --> 
+	<script type="text/javascript" src="palabrasLogo.js"></script>
+	<!-- Audiometria --> 
+	<script type="text/javascript" src="audiometria.js"></script>
 	<!-- Mi script --> 
 	<script type="text/javascript" src="Audmax.js"></script>
+	<!-- Logoaudiometría --> 
+	<script type="text/javascript" src="logoaudiometria.js"></script>
+	
 
 </body>
 </html>
