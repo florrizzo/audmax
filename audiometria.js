@@ -212,7 +212,7 @@ function mask() {
         highpassFilter.connect(lowpassFilter);
 
         // Conectar el filtro pasa bajos al destino de audio
-        lowpassFilter.toDestination();
+        lowpassFilter.connect(panner).toDestination();
 
         // Obtener la frecuencia central seleccionada
         let freqValue = parseInt(
@@ -240,6 +240,7 @@ function mask() {
           lowpassFilter.frequency.value = frequencies[freqValue].upper;
 
           // Iniciar la reproducción del ruido blanco con Tone.js
+          noise.connect(panner)
           noise.start();
         } else {
           sweetAlert("Frecuencia central no válida");

@@ -343,15 +343,15 @@
 			</div>
 	
 			<div class="logoaudiometria__enmascaramiento">
-				  <input id="enmascarar" type="checkbox">
-				  <label for="enmascarar">Enmascarar</label>
+				  <input id="logoaudiometria__enmascarar" type="checkbox" value="1" onclick="maskLogo()">
+				  <label for="logoaudiometria__enmascarar">Enmascarar</label>
 				  <p>Tipo de enmascaramiento:</p>
 				  <div>
-					  <input name="tipoEnmascaramiento" id="bandaAncha" type="radio">
+					  <input name="tipoEnmascaramientoLogo" id="bandaAncha" type="radio" value="1">
 					<label for="bandaAncha">Ruido de banda ancha</label>
 				  </div>
 				  <div>
-					  <input name="tipoEnmascaramiento" id="bandaEstrecha" type="radio">
+					  <input name="tipoEnmascaramientoLogo" id="ruidoVerbal" type="radio" value="-1">
 					<label for="bandaEstrecha">Ruido Verbal</label>
 				</div>
 				<p class="pinline">Intensidad [dBHL]:</p>
@@ -382,19 +382,16 @@
 				</div>
 			</div>
 			<div class="logoaudiometria__controles">
-				<div>
+				<div class="btn__list">
 					<button onclick="playAudio()" class="btn__logoControl">Reproducir Lista</button>
-				</div>
-				<div>
+					<button onclick="playPause()" class="btn__logoControl">Play/Pausa</button>
+					<button onclick="playPause()" class="btn__logoControl">Borrar</button>
+					<button onclick="stop()" class="btn__logoControl">Finalizar Lista</button>
+				  </div>
+				  <div class="btn__right">
 					<button onclick="verdeRojo('verde')" id="btn__logoCorrecto"></button>
 					<button onclick="verdeRojo('rojo')" id="btn__logoIncorrecto"></button>
-				</div>
-				<div>
-				  <button onclick="playPause()" class="btn__logoControl">Play/Pausa</button>
-				</div>
-				<div>
-				  <button onclick="stop()" class="btn__logoControl">Finalizar Lista</button>
-				</div>
+				  </div>
 			</div>
 			
 
@@ -480,10 +477,68 @@
 		</div>
 		
 	  	<div class="logoaudiometria__botonesAbajo">
-			<button class="btn__abajo">Resultado</button>
+			<button class="btn__abajo">Agregar umbral de voz</button>
+			<button class="btn__abajo">Agregar umbral de palabra</button>
+			<button class="btn__abajo">Agregar umbral de maxima discriminacion</button>
 			<button class="btn__abajo">Borrar tabla</button>
-			<button class="btn__abajo">Guardar</button>
-	  	</div>				
+			<button class="btn__abajo">Guardar Resultado</button>
+	  	</div>
+		
+		  <table class="audiometria__tabla">
+            <thead>
+                <tr>
+                    <th>Intensidad [dbHL]</th>
+                    <th>-10</th>
+                    <th>-5</th>
+                    <th>0</th>
+                    <th>5</th>
+                    <th>10</th>
+                    <th>15</th>
+                    <th>20</th>
+                    <th>25</th>
+                    <th>30</th>
+					<th>35</th>
+					<th>40</th>
+					<th>45</th>
+					<th>50</th>
+					<th>55</th>
+					<th>60</th>
+					<th>65</th>
+					<th>70</th>
+					<th>75</th>
+					<th>80</th>
+					<th>90</th>
+					<th>95</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th> Aciertos [%] +- diferencia [db]</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+					<td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+					<td></td>
+                    <td></td>
+                    <td></td>
+					<td></td>
+                    <td></td>
+                    <td></td>
+					<td></td>
+					<td></td>
+                </tr>
+            </tbody>
+        </table>
+		<br>
 	</div>
 
 	<!-- Libreria Sweet Alert -->
