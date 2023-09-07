@@ -14,12 +14,13 @@ function music(audio) {
   audioLogo = audio;
 }
 
+let audioElement = null;
 function playAudio() {
   // Crear un contexto de audio
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
   // Crear un elemento de audio y cargar un archivo de audio
-  const audioElement = new Audio(audioLogo);
+  audioElement = new Audio(audioLogo);
   const audioSource = audioContext.createMediaElementSource(audioElement);
 
   // Crear un nodo de panorámico (panning) y conectarlo al nodo de salida
@@ -62,6 +63,25 @@ function playAudio() {
   setVolume(intensity);
 }
 
+let count = 0;
+
+function playPause() {
+  if (count == 0) {
+    console.log("play");
+    count = 1;
+    audioElement.play();
+  } else {
+    console.log("pausa");
+    count = 0;
+    audioElement.pause();
+  }
+}
+
+function stop() {
+  audioElement.pause();
+  audioElement.currentTime = 0;
+}
+
 function maskLogo() {
   console.log("entro");
   let ele = document.getElementsByName("tipoEnmascaramientoLogo");
@@ -80,8 +100,8 @@ function maskLogo() {
   ];
 
   let verbalMaskListIntensities = [
-    0.015, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6,
-    0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95,
+    0.015, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65,
+    0.7, 0.75, 0.8, 0.85, 0.9, 0.95,
   ];
 
   let index = maskListIntensitiesdB.indexOf(intensity);
@@ -166,8 +186,7 @@ function maskLogo() {
         // Ejemplo de cómo cambiar el panorama y el volumen
         const panValue = getSelectedValue("oidoLogo");
         setPan(panValue); // Pan completamente a la izquierda
-        setVolume(verbalIntensity)
-        
+        setVolume(verbalIntensity);
       } else {
         Swal.fire({
           icon: "error",
@@ -211,5 +230,23 @@ function verdeRojo(color) {
   let tableSpace = "tablaLogo" + contTabla;
   contTabla++;
   const element = document.getElementById(tableSpace);
+  element.classList.remove("bg-white");
   element.classList.add("bg-" + color);
+}
+
+function borrar() {
+  if (contTabla >= 0) {
+    if (contTabla > 0) {
+        contTabla--;
+    }
+    let tableSpace = "tablaLogo" + contTabla;
+    const element = document.getElementById(tableSpace);
+
+    // Elimina las clases de fondo verde y rojo
+    element.classList.remove("bg-verde");
+    element.classList.remove("bg-rojo");
+
+    // Agrega la clase de fondo blanco
+    element.classList.add("bg-white");
+  }
 }

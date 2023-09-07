@@ -104,6 +104,8 @@
 						<p id="audioIntensity" class="pinline">10</p>
 						<button onclick="changeIntensityp1('audioIntensity')">+ 1</button>
 						<button onclick="changeIntensityp5('audioIntensity')">+ 5</button>
+						<input id="audiometria__molestia" type="checkbox" value="1">
+						<label for="audiometria__molestia">M</label>	
 				  	</div>
 				</div>
 			</div>
@@ -357,7 +359,7 @@
 				<p class="pinline">Intensidad [dBHL]:</p>
 				<button onclick="changeIntensityn5('logoMaskIntensity', 'mask')">- 5</button>
 				<p class="pinline" id="logoMaskIntensity">5</p>
-				<button onclick="changeIntensityp5('logoMaskIntensity')">+ 5</button>	
+				<button onclick="changeIntensityp5('logoMaskIntensity')">+ 5</button>
 			</div>
 		</div>
 
@@ -379,13 +381,15 @@
 					<p class="pinline" id="logoIntensity">0</p>
 					<button onclick="changeIntensityp1('logoIntensity')">+ 1</button>
 					<button onclick="changeIntensityp5('logoIntensity')">+ 5</button>
+					<input id="logoaudiometria__molestia" type="checkbox" value="1">
+					<label for="logoaudiometria__molestia">M</label>	
 				</div>
 			</div>
 			<div class="logoaudiometria__controles">
 				<div class="btn__list">
 					<button onclick="playAudio()" class="btn__logoControl">Reproducir Lista</button>
 					<button onclick="playPause()" class="btn__logoControl">Play/Pausa</button>
-					<button onclick="playPause()" class="btn__logoControl">Borrar</button>
+					<button onclick="borrar()" class="btn__logoControl">Borrar</button>
 					<button onclick="stop()" class="btn__logoControl">Finalizar Lista</button>
 				  </div>
 				  <div class="btn__right">
