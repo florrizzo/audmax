@@ -8,20 +8,20 @@
 	  		margin: 0;
   			font-family: Arial;
   			text-align: center;
-			background-color: #e3e2de;
+			background-color: white;
 		}
 
 	#vistaPrincipal {
-		background-color: #e3e2de;
+		background-color: white;
 	}
 	#calibracion {
-		background-color: #e3e2de;
+		background-color: white;
 	}
 	#audiometria {
-		background-color: #e3e2de;
+		background-color: white;
 	}
 	#logoaudiometria {
-		background-color: #e3e2de;
+		background-color: white;
 	}
 
 	th {
@@ -39,6 +39,17 @@
 		display: inline-block;
 	}
 
+	button {
+		background-color: white;
+	}
+/*------------------------------------------------------------------------------------------------------*/
+	/*Calibracion*/
+
+	.audiometria__tabla input {
+		border: none; /* Elimina los bordes del input */
+		width: 100%; /* Ajusta el ancho al 100% del td */
+		box-sizing: border-box; /* Asegura que el padding y border estén incluidos en el ancho total */
+	}
 /*------------------------------------------------------------------------------------------------------*/
 	/*Audiometría*/
 
@@ -282,7 +293,7 @@
 	}
 
 	.logoaudiometria__tdTitulo {
-		background-color: #e3e2de;
+		background-color: white;
 		border: 1px solid black;
 		margin: 0 0;
 	}
@@ -312,7 +323,7 @@
 
 	/* Style tab links */
 	.tablink {
-  		background-color: #e3e2de;
+  		background-color: #43a4e6;
   		color: black;
   		float: left;
   		border: none;
@@ -324,7 +335,7 @@
 	}
 
 	.tablink:hover {
-	  	background-color: #777;
+	  	background-color: #327aab;
 	}
 
 	/* Style the tab content (and add height:100% for full page content) */
@@ -335,3 +346,16 @@
 		height: 100%;
 	}
 
+	.indicador-audio {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background-color: #ccc;
+		display: inline-block;
+		margin-left: 10px;
+	}
+	
+	.indicador-audio.activo {
+		background-color: #00ff00;
+		box-shadow: 0 0 10px #00ff00;
+	}

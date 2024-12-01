@@ -15,65 +15,89 @@ function music(audio) {
 }
 
 let audioElement = null;
-function playAudio() {
-  // Crear un contexto de audio
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-  // Crear un elemento de audio y cargar un archivo de audio
-  audioElement = new Audio(audioLogo);
-  const audioSource = audioContext.createMediaElementSource(audioElement);
 
-  // Crear un nodo de panorámico (panning) y conectarlo al nodo de salida
-  const pannerLogo = audioContext.createStereoPanner();
-  audioSource.connect(pannerLogo);
-  pannerLogo.connect(audioContext.destination);
+async function playAPIList() {
+  try {
+    let intensity = parseInt(document.getElementById("logoIntensity").innerHTML);
 
-  // Función para controlar el panorama (de -1 a 1, donde -1 es izquierda y 1 es derecha)
-  function setPan(panValue) {
-    pannerLogo.pan.value = panValue;
-  }
+    const canal = getSelectedValue("oidoLogo");
 
-  // Función para ajustar el volumen (de 0 a 1)
-  function setVolume(volumeValue) {
-    audioElement.volume = volumeValue;
-  }
-
-  // Reproducir el audio
-  audioElement.play();
-
-  // Ejemplo de cómo cambiar el panorama y el volumen
-  const panValue = getSelectedValue("oidoLogo");
-  setPan(panValue); // Pan completamente a la izquierda
-
-  let intensity = parseInt(document.getElementById("logoIntensity").innerHTML);
-  const intensityAux = [0.001, 0.002, 0.003, 0.004];
-  // Manejar la intensidad
-  if (intensity % 5 !== 0 && intensity >> 0) {
-    const baseIntensity = list_intensitiesdBLogo.indexOf(
-      Math.ceil(intensity / 5) * 5 - 5
+    // Realizar una solicitud GET al servicio FastAPI
+    const response = await fetch(
+      `http://localhost:9000/generar-lista/${audioLogo}/${intensity}/${canal}`
     );
-    intensity =
-      list_intensitiesLogo[baseIntensity] +
-      intensityAux[(Math.abs(intensity) % 5) - 1];
-  } else {
-    const index = list_intensitiesdBLogo.indexOf(intensity);
-    intensity = list_intensitiesLogo[index];
+    const audioBlob = await response.blob();
+
+    // Crear un objeto URL para el audio
+    const audioUrl = URL.createObjectURL(audioBlob);
+
+    audioElement = new Audio(audioUrl);
+    audioElement.play();
+  } catch (error) {
+    console.error("Error al reproducir el audio:", error);
   }
-  console.log(intensity);
-  setVolume(intensity);
 }
 
-let count = 0;
+// function playAudio() {
+//   // Crear un contexto de audio
+//   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+//   // Crear un elemento de audio y cargar un archivo de audio
+//   audioElement = new Audio(audioLogo);
+//   const audioSource = audioContext.createMediaElementSource(audioElement);
+
+//   // Crear un nodo de panorámico (panning) y conectarlo al nodo de salida
+//   const pannerLogo = audioContext.createStereoPanner();
+//   audioSource.connect(pannerLogo);
+//   pannerLogo.connect(audioContext.destination);
+
+//   // Función para controlar el panorama (de -1 a 1, donde -1 es izquierda y 1 es derecha)
+//   function setPan(panValue) {
+//     pannerLogo.pan.value = panValue;
+//   }
+
+//   // Función para ajustar el volumen (de 0 a 1)
+//   function setVolume(volumeValue) {
+//     audioElement.volume = volumeValue;
+//   }
+
+//   // Reproducir el audio
+//   audioElement.play();
+
+//   // Ejemplo de cómo cambiar el panorama y el volumen
+//   const panValue = getSelectedValue("oidoLogo");
+//   setPan(panValue); // Pan completamente a la izquierda
+
+//   let intensity = parseInt(document.getElementById("logoIntensity").innerHTML);
+//   const intensityAux = [0.001, 0.002, 0.003, 0.004];
+//   // Manejar la intensidad
+//   if (intensity % 5 !== 0 && intensity >> 0) {
+//     const baseIntensity = list_intensitiesdBLogo.indexOf(
+//       Math.ceil(intensity / 5) * 5 - 5
+//     );
+//     intensity =
+//       list_intensitiesLogo[baseIntensity] +
+//       intensityAux[(Math.abs(intensity) % 5) - 1];
+//   } else {
+//     const index = list_intensitiesdBLogo.indexOf(intensity);
+//     intensity = list_intensitiesLogo[index];
+//   }
+//   console.log(intensity);
+//   setVolume(intensity);
+// }
+
+let count = 1;
 
 function playPause() {
-  if (count == 0) {
-    console.log("play");
-    count = 1;
-    audioElement.play();
+  if (audioElement) {
+    if (audioElement.paused) {
+      audioElement.play();
+    } else {
+      audioElement.pause();
+    }
   } else {
-    console.log("pausa");
-    count = 0;
-    audioElement.pause();
+    console.log("No hay audio para reproducir o pausar");
   }
 }
 
@@ -95,7 +119,7 @@ function maskLogo() {
     5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
   ];
   let maskListIntensities = [
-    -57.5, -55, -52.5, -50, -47.5, -45, -42.5, -40, -37.5, -35, -32.5, -30,
+    -57.5, -55, -52.5, -50, -47.5, -45, -42.5, -40, -37.5, -35, -32.5, -20,
     -27.5, -25, -22.5, -20, -17.5, -15, -12.5,
   ];
 

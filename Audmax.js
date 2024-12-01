@@ -38,7 +38,7 @@ function changeIntensityp1(id) {
 function changeIntensityp5(id) {
   let intensity = parseInt(document.getElementById(id).innerHTML);
   // Subir o bajar la intensidad si no estoy en los extremo
-  if (intensity < 95) {
+  if (intensity < 120) {
     intensity % 5 != 0
       ? (intensity = Math.ceil(intensity / 5) * 5)
       : (intensity += 5);

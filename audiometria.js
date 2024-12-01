@@ -3,101 +3,83 @@
 // create web audio api context
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-let list_frequencies = [125, 250, 500, 1000, 1500, 2000, 4000, 6000, 8000];
-let list_intensitiesdB = [
-  -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85,
-  90, 95,
+let list_frequencies = [
+  125, 250, 500, 1000, 1500, 2000, 3000, 4000, 6000, 8000,
 ];
-let list_intensities = [
-  0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01, 0.011,
-  0.012, 0.013, 0.014, 0.015, 0.016, 0.017, 0.018, 0.019, 0.02, 0.021, 0.022,
-];
+let offsetdBHL = [30.5, 18, 11, 5.5, 5.5, 4.5, 2.5, 9.5, 17, 17.5];
 
-function playNote(duration) {
-  const frequency = parseInt(
-    document.getElementById("audioFrequency").innerHTML
-  );
-  const typeSignal = getSelectedValue("tipoSignal");
 
-  const gainNode = audioCtx.createGain();
-  let intensity = parseInt(document.getElementById("audioIntensity").innerHTML);
+function getTableValues(querySelector) {
+  const inputs = document.querySelectorAll(querySelector);
+  const values = [];
 
-  // Manejar la intensidad
-  if (intensity % 5 !== 0) {
-    const intensityAux = [0.0001, 0.0002, 0.0003, 0.0004];
-    const baseIntensity = list_intensitiesdB.indexOf(
-      Math.ceil(intensity / 5) * 5 - 5
-    );
-    intensity =
-      list_intensities[baseIntensity] + intensityAux[(Math.abs(intensity) % 5) - 1];
-  } else {
-    const index = list_intensitiesdB.indexOf(intensity);
-    intensity = list_intensities[index];
-  }
-  gainNode.gain.value = intensity;
-
-  // Manejar el panning
-  const panValue = getSelectedValue("oidoAudiometria");
-  const panner = new StereoPannerNode(audioCtx, { pan: panValue });
-
-  // Crear el Oscillator node
-  const oscillator = audioCtx.createOscillator();
-  oscillator.type = "sine";
-  oscillator.frequency.value = frequency;
-
-  // Conectar nodos
-  oscillator.connect(gainNode).connect(panner).connect(audioCtx.destination);
-
-  let isTonePlaying = false;
-
-  oscillator.onended = function() {
-    isTonePlaying = false;
-  };
-
-  if (typeSignal === "manual") {
-    document.getElementById("reproducirTono").addEventListener("mousedown", function() {
-      if (!isTonePlaying) {
-        isTonePlaying = true;
-        gainNode.gain.value = intensity;
-        oscillator.start();
-      }
-    });
-
-    document.getElementById("reproducirTono").addEventListener("mouseup", function() {
-      if (isTonePlaying) {
-        oscillator.stop();
-      }
-    });
-  } else if (typeSignal === "pulsada") {
-    // Reproducir la señal intermitente
-    let isToneOn = true;
-
-    oscillator.start();
-
-    // Función para alternar la señal entre tono y silencio
-    function toggleTone() {
-      if (isToneOn) {
-        gainNode.gain.value = 0;
-      } else {
-        gainNode.gain.value = intensity;
-      }
-      isToneOn = !isToneOn;
-      setTimeout(toggleTone, 500);
+  inputs.forEach((input) => {
+    const parsedValue = parseFloat(input.value);
+    if (isNaN(parsedValue)) {
+      values.push(0);
+    } else {
+      values.push(parsedValue);
     }
+  });
+  return values;
+}
 
-    toggleTone();
+let isPlaying = false;
 
-    setTimeout(function () {
-      oscillator.stop();
-      gainNode.gain.value = 0; // Apagar el tono al detenerse
-    }, duration);
-  } else if (typeSignal === "continua") {
-    // Reproducir la señal continua
-    oscillator.start();
+async function playAPI() {
+  console.log(isPlaying)
+  if (isPlaying) return; // Si ya está reproduciendo, no hacer nada
+  isPlaying = true;
+  const indicador = document.getElementById('indicadorAudio');
+  indicador.classList.add('activo');
+  try {
+    const frequency = parseInt(
+      document.getElementById("audioFrequency").innerHTML
+    );
+    let intensity = parseInt(
+      document.getElementById("audioIntensity").innerHTML
+    );
+    const canal = getSelectedValue("oidoAudiometria");
+    const typeSignal = getSelectedValue("tipoSignal");
 
-    setTimeout(function () {
-      oscillator.stop();
-    }, duration);
+    //Conversion a SPL
+    const indexFrequency = list_frequencies.indexOf(frequency);
+    intensity += offsetdBHL[indexFrequency];
+    offsetMedicion = [5, 5, 5, 5, 5, 0, 0, 5, 5, 5];
+    intensity += offsetMedicion[indexFrequency];
+
+    //Curva calibracion
+    let calib;
+    const calibL = getTableValues('.calibL');
+    const calibR = getTableValues('.calibR');
+    if (canal === "izquierda"){
+      calib = calibL
+    } else {
+      calib = calibR
+    }
+    intensity += calib[indexFrequency];
+
+    // Realizar una solicitud GET al servicio FastAPI
+    const response = await fetch(
+      `http://localhost:9000/generar-tono/${frequency}/${intensity}/izquierda/${typeSignal}`
+    );
+    const audioBlob = await response.blob();
+
+    // Crear un objeto URL para el audio
+    const audioUrl = URL.createObjectURL(audioBlob);
+
+    // Crear un elemento de audio y reproducirlo
+    const audioElement = new Audio(audioUrl);
+    audioElement.play();
+    // isPlaying = false;
+    audioElement.onended = function() {
+      isPlaying = false;
+      indicador.classList.remove('activo');
+  }();
+
+  } catch (error) {
+    console.error("Error al reproducir el audio:", error);
+    isPlaying = false;
   }
 }
 
@@ -124,6 +106,37 @@ function changeFrequencyp1() {
   // Devolver valor del indice
   document.getElementById("audioFrequency").innerHTML = frequency;
 }
+
+document.addEventListener('keydown', function(event) {
+  switch(event.code) {
+    case 'Space':
+      event.preventDefault();
+      playAPI();
+      break;
+    case 'Enter':
+      event.preventDefault();
+      umbralAudiometria();
+      break;
+    case 'ArrowRight':
+      event.preventDefault();
+      changeFrequencyp1();
+      break;
+    case 'ArrowLeft':
+      event.preventDefault();
+      changeFrequencyn1();
+      break;
+    case 'ArrowUp':
+      event.preventDefault();
+      changeIntensityp5('audioIntensity');
+      break;
+    case 'ArrowDown':
+      event.preventDefault();
+      changeIntensityn5('audioIntensity', 'audio');
+      break;
+  }
+});
+
+
 
 const noise = new Tone.Noise("white");
 let panner = new Tone.Panner();
@@ -163,10 +176,10 @@ function mask() {
     }
   }
 
-  if (panValue == 1) {
-    maskPanValue = -1;
-  } else if (panValue == -1) {
+  if (panValue == "izquierda") {
     maskPanValue = 1;
+  } else if (panValue == "derecha") {
+    maskPanValue = -1;
   }
 
   panner.pan.value = maskPanValue;
@@ -240,7 +253,7 @@ function mask() {
           lowpassFilter.frequency.value = frequencies[freqValue].upper;
 
           // Iniciar la reproducción del ruido blanco con Tone.js
-          noise.connect(panner)
+          noise.connect(panner);
           noise.start();
         } else {
           sweetAlert("Frecuencia central no válida");
@@ -320,37 +333,37 @@ let Tabla = [
   },
 ];
 
-function cargar() {
-  Tabla = JSON.parse(localStorage.getItem("TablaAudiometria"));
-  for (let i = 0; i < 9; i++) {
-    try {
-      document.getElementById("Der" + list_frequencies[i]).innerHTML =
-        Tabla[i].oidoDerecho;
-      document.getElementById("Der" + list_frequencies[i] + "Ver").innerHTML =
-        Tabla[i].oidoDerecho;
-    } catch (error) {}
-    try {
-      document.getElementById("Izq" + list_frequencies[i]).innerHTML =
-        Tabla[i].oidoIzquierdo;
-      document.getElementById("Izq" + list_frequencies[i] + "Ver").innerHTML =
-        Tabla[i].oidoIzquierdo;
-    } catch (error) {}
-    try {
-      document.getElementById("EnmDer" + list_frequencies[i]).innerHTML =
-        Tabla[i].enmDerecho;
-      document.getElementById(
-        "EnmDer" + list_frequencies[i] + "Ver"
-      ).innerHTML = Tabla[i].enmDerecho;
-    } catch (error) {}
-    try {
-      document.getElementById("EnmIzq" + list_frequencies[i]).innerHTML =
-        Tabla[i].enmIzquierdo;
-      document.getElementById(
-        "EnmIzq" + list_frequencies[i] + "Ver"
-      ).innerHTML = Tabla[i].enmIzquierdo;
-    } catch (error) {}
-  }
-}
+// function cargar() {
+//   Tabla = JSON.parse(localStorage.getItem("TablaAudiometria"));
+//   for (let i = 0; i < 9; i++) {
+//     try {
+//       document.getElementById("Der" + list_frequencies[i]).innerHTML =
+//         Tabla[i].oidoDerecho;
+//       document.getElementById("Der" + list_frequencies[i] + "Ver").innerHTML =
+//         Tabla[i].oidoDerecho;
+//     } catch (error) {}
+//     try {
+//       document.getElementById("Izq" + list_frequencies[i]).innerHTML =
+//         Tabla[i].oidoIzquierdo;
+//       document.getElementById("Izq" + list_frequencies[i] + "Ver").innerHTML =
+//         Tabla[i].oidoIzquierdo;
+//     } catch (error) {}
+//     try {
+//       document.getElementById("EnmDer" + list_frequencies[i]).innerHTML =
+//         Tabla[i].enmDerecho;
+//       document.getElementById(
+//         "EnmDer" + list_frequencies[i] + "Ver"
+//       ).innerHTML = Tabla[i].enmDerecho;
+//     } catch (error) {}
+//     try {
+//       document.getElementById("EnmIzq" + list_frequencies[i]).innerHTML =
+//         Tabla[i].enmIzquierdo;
+//       document.getElementById(
+//         "EnmIzq" + list_frequencies[i] + "Ver"
+//       ).innerHTML = Tabla[i].enmIzquierdo;
+//     } catch (error) {}
+//   }
+// }
 
 function umbralAudiometria() {
   const frequency = parseInt(
@@ -373,16 +386,16 @@ function umbralAudiometria() {
     enmascarar = 0;
   }
 
-  const oidos = [-1, 1];
+  const oidos = ["izquierda", "derecha"];
   const oidosText = ["Izq", "Der"];
-
+  console.log(panValue)
   for (let i = 0; i < oidos.length; i++) {
-    const oido = oidos[i];
+    // const oido = oidos[i];
     const oidoText = oidosText[i];
     const id = oidoText + frequency;
     if (panValue == oidos[i]) {
       setIntensityAndVer(intensity, id);
-      if (intensity === 95) {
+      if (intensity === 100) {
         const swalWithBootstrapButtons = Swal.mixin({
           customClass: {
             confirmButton: "btn btn-success",
@@ -402,7 +415,7 @@ function umbralAudiometria() {
           })
           .then((result) => {
             if (result.dismiss === Swal.DismissReason.cancel) {
-              setIntensityAndVer("95 - N", id);
+              setIntensityAndVer("100 - N", id);
             }
           });
       }
@@ -413,12 +426,8 @@ function umbralAudiometria() {
       }
       if (enmascarar == 1) {
         setIntensityAndVer(maskIntensity, "Enm" + oidosText[aux] + frequency);
-      } else {
-        setIntensityAndVer(0, "Enm" + oidoText + frequency);
       }
-    } else {
-      setIntensityAndVer(0, id);
-    }
+    } 
   }
 }
 
@@ -548,33 +557,64 @@ function graphic() {
 // Guardar
 
 function guardar() {
-  for (let i = 0; i < 9; i++) {
-    try {
-      Tabla[i].oidoDerecho = document.getElementById(
-        "Der" + list_frequencies[i]
-      ).innerHTML;
-    } catch (error) {}
-    try {
-      Tabla[i].oidoIzquierdo = document.getElementById(
-        "Izq" + list_frequencies[i]
-      ).innerHTML;
-    } catch (error) {}
-    try {
-      Tabla[i].enmDerecho = document.getElementById(
-        "EnmDer" + list_frequencies[i]
-      ).innerHTML;
-    } catch (error) {}
-    try {
-      Tabla[i].enmIzquierdo = document.getElementById(
-        "EnmIzq" + list_frequencies[i]
-      ).innerHTML;
-    } catch (error) {}
+  // Obtener los valores de nombre, apellido y edad
+  const nombre = document.getElementById("nombre").value;
+  const apellido = document.getElementById("apellido").value;
+  let edad = document.getElementById("edad").value;
+  edad = isNaN(parseInt(edad)) ? null : parseInt(edad);
+
+  // Crear los objetos de audiometría y logoaudiometría
+  let audiometria = {
+    oido_derecho: {},
+    oido_izquierdo: {},
+    enm_derecho: {},
+    enm_izquierdo: {}
+  };
+
+  for (let i = 0; i < list_frequencies.length; i++) {
+    const freq = list_frequencies[i];
+    audiometria.oido_derecho[freq + "Hz"] = document.getElementById("Der" + freq).innerHTML || null;
+    audiometria.oido_izquierdo[freq + "Hz"] = document.getElementById("Izq" + freq).innerHTML || null;
+    audiometria.enm_derecho[freq + "Hz"] = document.getElementById("EnmDer" + freq).innerHTML || null;
+    audiometria.enm_izquierdo[freq + "Hz"] = document.getElementById("EnmIzq" + freq).innerHTML || null;
   }
-  saveStorage();
+
+  // Crear el objeto para enviar a la API
+  const data = {
+    nombre: nombre,
+    apellido: apellido,
+    edad: edad,
+    audiometria: audiometria,
+    logoaudiometria: {}  // Suponiendo que este objeto se llena en otra parte del código
+  };
+
+  // Enviar los datos a la API
+  console.log(data)
+  fetch("http://127.0.0.1:9000/guardar_estudio", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Success:", data);
+    Swal.fire({
+      title: '¡Éxito!',
+      text: 'Datos guardados con éxito',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    })
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+    Swal.fire({
+      title: 'Error',
+      text: 'Hubo un error al guardar los datos',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+  });
 }
 
-function saveStorage() {
-  const TablaJSON = JSON.stringify(Tabla);
-  localStorage.setItem("TablaAudiometria", TablaJSON);
-  console.log(TablaJSON);
-}
